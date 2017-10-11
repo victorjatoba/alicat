@@ -17,11 +17,6 @@ library("catR")
 ## Loading parameters
 enem_mat_param = read.table("data/enem_matematica.par", header = TRUE, sep = " ", stringsAsFactors = FALSE)
 
-## Loading responses
-Responses = read.table("data/enem_2012.txt", header = FALSE, sep = " ", stringsAsFactors = FALSE)
-Responses <- as.matrix(Responses)
-Responses <- array(Responses, c(1,45))
-
 # Change to Matrix
 Bank <- as.matrix(enem_mat_param)
 
@@ -44,17 +39,40 @@ Stop <- list(rule = "precision", thr = 0.6)
 Final <- list(method = "EAP", alpha = 0.05)
 #testList(Final, type = "final")
 
-#res <- randomCAT(trueTheta = rnorm(n=1,mean=0,sd=1),
-res <- randomCAT(trueTheta = 0.578175,
-                 itemBank = Bank,
-                 responses = Responses,
-                 start = Start, test = Test,
-                 stop = Stop, final = Final)
 
+## Loading responses
+fileName <- "./data/enem_2012_responses.txt";
+conn <- file(fileName, open = "r")
+linn <- readLines(conn)
 
-plot(res, ci = TRUE, trueTh = TRUE, classThr = 2,
-     save.options = c("home/adapqr/outs/", "example", "pdf"))
+## Loading true thetas
+fileName <- "./data/enem.theta"; #this theta was estimated based all 175 items
+connTheta <- file(fileName, open = "r")
+linnTheta <- readLines(connTheta)
 
+for (i in 1:length(linn)) {
+  # change response line to table
+  responseDataLine <- read.table(textConnection(linn[[i]]))
+  # reading only math responses
+  onlyMathResponses <- as.matrix(responseDataLine[91:136])
 
+  
+  # change theta line to table
+  truethetaDataLine <- read.table(textConnection(linnTheta[[i]]))
+  # reading EAP estimated
+  truethetaEAP <- as.matrix(truethetaDataLine[1])
+  
+  # RUN CAT
+  res <- randomCAT(trueTheta = truethetaEAP,
+                   itemBank = Bank,
+                   responses = onlyMathResponses,
+                   start = Start, test = Test,
+                   stop = Stop, final = Final)
+  
+  plot(res, ci = TRUE, trueTh = TRUE, classThr = 2,
+       save.options = c("home/adapqr/outs/", "example", "pdf"))
+  res
+}
 
-res
+close(conn)
+close(connTheta)

@@ -11,7 +11,7 @@ linn <- readLines(conn)
 
 for (i in 1:length(linn)) {
   dataline<-read.table(textConnection(linn[[i]]))
-  onlyMathResponses <- data[91:136]
+  onlyMathResponses <- dataline[91:136]
 }
 
 close(conn)

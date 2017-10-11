@@ -1,4 +1,4 @@
-## AdapQ R code
+## Example using all Enem areas, with 175 items
 ##
 ## Author: @victorjatoba
 ## Email: victorjatoba[at]usp.br
