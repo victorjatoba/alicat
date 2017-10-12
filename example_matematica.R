@@ -15,7 +15,7 @@ library("catR")
 #setwd(path)
 
 ## Loading parameters
-enem_mat_param = read.table("data/enem_matematica.par", header = TRUE, sep = " ", stringsAsFactors = FALSE)
+enem_mat_param = read.table("data/enem_math.par", header = TRUE, sep = " ", stringsAsFactors = FALSE)
 
 # Change to Matrix
 Bank <- as.matrix(enem_mat_param)
@@ -28,7 +28,7 @@ Test <- list(method = "EAP", itemSelect = "MFI")
 
 ### STOP RULE ###
 # Creation of a stopping rule: precision criterion, standard error to be reached 0.n
-Stop <- list(rule = "precision", thr = 0.6)
+Stop <- list(rule = "precision", thr = 0.5)
 # Stop rule by adding a length criterion, with threshold of n items
 #Stop <- list(rule = "length", thr = 26)
 # Update of the stopping rule: by adding a length criterion, with threshold of 15 items
@@ -46,11 +46,14 @@ conn <- file(fileName, open = "r")
 linn <- readLines(conn)
 
 ## Loading true thetas
-fileName <- "./data/enem.theta"; #this theta was estimated based all 175 items
+fileName <- "./data/enem_math.theta";
 connTheta <- file(fileName, open = "r")
 linnTheta <- readLines(connTheta)
 
 for (i in 1:length(linn)) {
+  #i = 821 #th -1.75
+  #i = 53 #th 2.17
+  
   # change response line to table
   responseDataLine <- read.table(textConnection(linn[[i]]))
   # reading only math responses
@@ -58,7 +61,7 @@ for (i in 1:length(linn)) {
 
   
   # change theta line to table
-  truethetaDataLine <- read.table(textConnection(linnTheta[[i]]))
+  truethetaDataLine <- read.table(textConnection(linnTheta[i]))
   # reading EAP estimated
   truethetaEAP <- as.matrix(truethetaDataLine[1])
   
@@ -69,8 +72,7 @@ for (i in 1:length(linn)) {
                    start = Start, test = Test,
                    stop = Stop, final = Final)
   
-  plot(res, ci = TRUE, trueTh = TRUE, classThr = 2,
-       save.options = c("home/adapqr/outs/", "example", "pdf"))
+  plot(res, ci = TRUE, trueTh = TRUE, classThr = 2)
   res
 }
 
