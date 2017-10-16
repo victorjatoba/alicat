@@ -20,10 +20,11 @@ enem_mat_param = read.table("data/enem_math.par", header = TRUE, sep = " ", stri
 # Change to Matrix
 Bank <- as.matrix(enem_mat_param)
 
+# MFI = Maximum Fisher Information
 Start <- list(nrItems = 1, theta = 0, startSelect = "MFI")
 #testList(Start, type = "start")
 
-Test <- list(method = "EAP", itemSelect = "MFI")
+Test <- list(method = "EAP", itemSelect = "KLP")
 #testList(Test, type = "test")
 
 ### STOP RULE ###
@@ -58,7 +59,7 @@ for (i in 1:length(linn)) {
   responseDataLine <- read.table(textConnection(linn[[i]]))
   # reading only math responses
   onlyMathResponses <- as.matrix(responseDataLine[91:136])
-
+  
   
   # change theta line to table
   truethetaDataLine <- read.table(textConnection(linnTheta[i]))
