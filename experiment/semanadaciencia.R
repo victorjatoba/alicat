@@ -24,7 +24,7 @@ Bank <- as.matrix(enem_mat_param)
 Start <- list(nrItems = 1, theta = 0, startSelect = "MFI")
 #testList(Start, type = "start")
 
-Test <- list(method = "EAP", itemSelect = "MFI")
+Test <- list(method = "EAP", itemSelect = "KLP")
 #testList(Test, type = "test")
 
 ### STOP RULE ###
@@ -51,30 +51,32 @@ fileName <- "./data/enem_math.theta";
 connTheta <- file(fileName, open = "r")
 linnTheta <- readLines(connTheta)
 
-for (i in 1:length(linn)) {
   # low knowledge
   #i = 555 #th -1.793918 7
   #i = 579 #th -1.843908 7
-  #i = 849 #th -1.973992 -5.999638 7
-  
+  ##i = 849 #th -1.973992 -5.999638 7
+  #responserId = 849;
+
   # medium knowledge
-  #i = 363 #th -0.000403 15
   #i = 459 #th -0.009814 19
   #i = 622 #th -0.003207 16
+  ##i = 363 #th -0.000403 15
+  #responserId = 363;
   
   # high knowledge
   #i = 53 #th 2.17
-  #i = 358 #th 2.251985 38
   #i = 371 #th 2.237750 2.344757 38
-  
+  ##i = 358 #th 2.251985 38
+  responserId = 358;
+
   # change response line to table
-  responseDataLine <- read.table(textConnection(linn[[i]]))
+  responseDataLine <- read.table(textConnection(linn[[responserId]]))
   # reading only math responses
   onlyMathResponses <- as.matrix(responseDataLine[91:136])
   
   
   # change theta line to table
-  truethetaDataLine <- read.table(textConnection(linnTheta[i]))
+  truethetaDataLine <- read.table(textConnection(linnTheta[responserId]))
   # reading EAP estimated
   truethetaEAP <- as.matrix(truethetaDataLine[1])
   
@@ -87,7 +89,7 @@ for (i in 1:length(linn)) {
   
   plot(res, ci = TRUE, trueTh = TRUE, classThr = 2)
   res
-}
+
 
 close(conn)
 close(connTheta)

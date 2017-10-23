@@ -1,0 +1,56 @@
+## To Semana da Ciência sample
+##
+## Author: @victorjatoba
+## Email: victorjatoba[at]usp.br
+## Organization: University of Sao Paulo (USP)
+## Date: oct 2017
+
+Post-hoc simulation of a full bank provided response pattern 
+ 
+ Item bank calibrated under Three-Parameter Logistic model 
+ 
+ True ability level: 2.25 
+ 
+ Starting parameters: 
+   Number of early items: 1 
+   Early item selection: maximum informative item for starting ability 
+    Early items not chosen to control for content balancing 
+   Starting ability: 0 
+
+ Adaptive test parameters: 
+   Next item selection method: Posterior Kullback-Leibler (KLP) information 
+     Prior ability distribution for KLP method: N(0,1) prior 
+   Provisional ability estimator: Expected a posteriori (EAP) estimator 
+     Provisional prior ability distribution: N(0,1) prior 
+   Ability estimation adjustment for constant pattern: none 
+
+ Stopping rule: 
+   Stopping criterion: precision of ability estimate 
+    Maximum SE value: 0.5 
+
+ Randomesque method: 
+   Number of 'randomesque' starting items: 1
+   Number of 'randomesque' test items: 1
+
+ Content balancing control: 
+   No control for content balancing 
+
+ Adaptive test details: 
+                                                                 
+Nr        1     2     3     4     5     6     7     8     9    10
+Item     24     7    10    11    21    22     6     8    43    12
+Resp.     1     1     1     1     1     1     1     0     1     1
+Est.  0.395  0.89 1.185 1.531 1.891 2.068 2.285 2.057 2.179 2.295
+SE    0.949 0.894 0.765 0.742 0.693 0.615 0.578 0.544 0.506 0.477
+
+ Satisfied stopping rule: 
+   Precision of ability estimate 
+ 
+ Final results: 
+   Length of adaptive test: 10 items 
+   Final ability estimator: Expected a posteriori (EAP) estimator 
+   Final prior distribution: N(0,1) prior 
+   Final ability estimate (SE): 2.295 (0.477) 
+   95% confidence interval: [1.359,3.23] 
+
+ Output was not captured! 

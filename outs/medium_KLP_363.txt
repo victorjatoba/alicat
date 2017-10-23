@@ -1,0 +1,56 @@
+## To Semana da Ciência sample
+##
+## Author: @victorjatoba
+## Email: victorjatoba[at]usp.br
+## Organization: University of Sao Paulo (USP)
+## Date: oct 2017
+
+Post-hoc simulation of a full bank provided response pattern 
+ 
+ Item bank calibrated under Three-Parameter Logistic model 
+ 
+ True ability level: 0 
+ 
+ Starting parameters: 
+   Number of early items: 1 
+   Early item selection: maximum informative item for starting ability 
+    Early items not chosen to control for content balancing 
+   Starting ability: 0 
+
+ Adaptive test parameters: 
+   Next item selection method: Posterior Kullback-Leibler (KLP) information 
+     Prior ability distribution for KLP method: N(0,1) prior 
+   Provisional ability estimator: Expected a posteriori (EAP) estimator 
+     Provisional prior ability distribution: N(0,1) prior 
+   Ability estimation adjustment for constant pattern: none 
+
+ Stopping rule: 
+   Stopping criterion: precision of ability estimate 
+    Maximum SE value: 0.5 
+
+ Randomesque method: 
+   Number of 'randomesque' starting items: 1
+   Number of 'randomesque' test items: 1
+
+ Content balancing control: 
+   No control for content balancing 
+
+ Adaptive test details: 
+                                                                           
+Nr         1      2      3      4      5      6      7      8      9     10
+Item      24     44     10     32     39      7      4     14     25     20
+Resp.      0      1      0      1      1      0      1      1      0      1
+Est.  -0.497 -0.248 -0.437 -0.242 -0.046 -0.145 -0.044  0.087  -0.01  0.068
+SE     0.824  0.771   0.71  0.663  0.625  0.584   0.55  0.521  0.507  0.485
+
+ Satisfied stopping rule: 
+   Precision of ability estimate 
+ 
+ Final results: 
+   Length of adaptive test: 10 items 
+   Final ability estimator: Expected a posteriori (EAP) estimator 
+   Final prior distribution: N(0,1) prior 
+   Final ability estimate (SE): 0.068 (0.485) 
+   95% confidence interval: [-0.883,1.019] 
+
+ Output was not captured! 

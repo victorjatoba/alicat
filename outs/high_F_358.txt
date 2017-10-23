@@ -1,0 +1,55 @@
+## To Semana da Ciência sample
+##
+## Author: @victorjatoba
+## Email: victorjatoba[at]usp.br
+## Organization: University of Sao Paulo (USP)
+## Date: oct 2017
+
+Post-hoc simulation of a full bank provided response pattern 
+ 
+ Item bank calibrated under Three-Parameter Logistic model 
+ 
+ True ability level: 2.25 
+ 
+ Starting parameters: 
+   Number of early items: 1 
+   Early item selection: maximum informative item for starting ability 
+    Early items not chosen to control for content balancing 
+   Starting ability: 0 
+
+ Adaptive test parameters: 
+   Next item selection method: maximum Fisher information 
+   Provisional ability estimator: Expected a posteriori (EAP) estimator 
+     Provisional prior ability distribution: N(0,1) prior 
+   Ability estimation adjustment for constant pattern: none 
+
+ Stopping rule: 
+   Stopping criterion: precision of ability estimate 
+    Maximum SE value: 0.5 
+
+ Randomesque method: 
+   Number of 'randomesque' starting items: 1
+   Number of 'randomesque' test items: 1
+
+ Content balancing control: 
+   No control for content balancing 
+
+ Adaptive test details: 
+                                                                 
+Nr        1     2     3     4     5     6     7     8     9    10
+Item     24    10     7    22    11    21     6    12     8    43
+Resp.     1     1     1     1     1     1     1     1     0     1
+Est.  0.395 0.799 1.185 1.475 1.774 2.068 2.285 2.422 2.197 2.295
+SE    0.949  0.86 0.765 0.706 0.664 0.615 0.578 0.542 0.507 0.477
+
+ Satisfied stopping rule: 
+   Precision of ability estimate 
+ 
+ Final results: 
+   Length of adaptive test: 10 items 
+   Final ability estimator: Expected a posteriori (EAP) estimator 
+   Final prior distribution: N(0,1) prior 
+   Final ability estimate (SE): 2.295 (0.477) 
+   95% confidence interval: [1.359,3.23] 
+
+ Output was not captured! 
