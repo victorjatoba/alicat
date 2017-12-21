@@ -24,14 +24,14 @@ Bank <- as.matrix(enem_mat_param)
 Start <- list(nrItems = 1, theta = 0, startSelect = "MFI")
 #testList(Start, type = "start")
 
-Test <- list(method = "EAP", itemSelect = "KLP")
+Test <- list(method = "EAP", itemSelect = "MPWI")
 #testList(Test, type = "test")
 
 ### STOP RULE ###
 # Creation of a stopping rule: precision criterion, standard error to be reached 0.n
 Stop <- list(rule = "precision", thr = 0.5)
 # Stop rule by adding a length criterion, with threshold of n items
-#Stop <- list(rule = "length", thr = 26)
+#Stop <- list(rule = "length", thr = 26
 # Update of the stopping rule: by adding a length criterion, with threshold of 15 items
 #Stop <- list(rule = c("precision", "length"), thr = c(0.6, 45))
 # Classification criterion, with classification threshold 0 and alpha level 0.05
@@ -55,7 +55,7 @@ linnTheta <- readLines(connTheta)
   #i = 555 #th -1.793918 7
   #i = 579 #th -1.843908 7
   ##i = 849 #th -1.973992 -5.999638 7
-  #responserId = 849;
+  responserId = 849;
 
   # medium knowledge
   #i = 459 #th -0.009814 19
@@ -67,7 +67,7 @@ linnTheta <- readLines(connTheta)
   #i = 53 #th 2.17
   #i = 371 #th 2.237750 2.344757 38
   ##i = 358 #th 2.251985 38
-  responserId = 358;
+  #responserId = 358;
 
   # change response line to table
   responseDataLine <- read.table(textConnection(linn[[responserId]]))
