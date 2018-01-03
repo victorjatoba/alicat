@@ -1,6 +1,6 @@
 
 # Reading ENEM data
-model <- read.csv('data/MICRODADOS_ENEM_2014.csv', nrows = 1000000)
+model <- read.csv('/media/victorjatoba/Data/Google\ Drive/Master\ Degree/[VictorJ]\ Project/Enem/microdados_enem2014/DADOS/MICRODADOS_ENEM_2014.csv', nrows = 2000000)
 
 # Obtained only Math responses
 res <- subset(model, IN_PRESENCA_MT == 1 & TX_RESPOSTAS_MT != ".............................................")
