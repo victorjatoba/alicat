@@ -23,7 +23,7 @@ Bank <- as.matrix(enem_mat_param)
 # MFI = Maximum Fisher Information
 Start <- list(nrItems = 1, theta = 0, startSelect = "MFI")
 
-Test <- list(method = "EAP", itemSelect = "GDIP")
+Test <- list(method = "EAP", itemSelect = "MFI")
 # MFI
 # KL
 # KLP
@@ -56,7 +56,7 @@ fileName <- "./data/enem-math.theta";
 connTheta <- file(fileName, open = "r")
 linnTheta <- readLines(connTheta)
 
-# low knowledgex
+# low knowledge
 #i = 293 #th -1.182060
 #i = 1853 #th -1.07 
 #i = 1798 #th -1.173081
@@ -67,8 +67,10 @@ linnTheta <- readLines(connTheta)
 #i = 621 #th -1.177539
 
 # high knowledge
+i = 930 #th 3.003470
 #i = 3790 #th 2.631965
 #i = 43 #th 1.76
+#Selecionar os 800 maiores e avaliar por 10 intervalos (2,0 - 2,1; 2,1 - 2.2)
 
 # weird behaviour
 # i = 846
@@ -98,7 +100,7 @@ linnTheta <- readLines(connTheta)
 
 # low administered items
 #i = 3534
-i = 433
+#i = 433
 
 responserId = i;
 
