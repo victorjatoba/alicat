@@ -1,9 +1,10 @@
-## @desc Ploting the result of ISR comparative study
-##
-## Author: @victorjatoba
-## Email: victorjatoba[at]usp.br
-## Organization: University of Sao Paulo (USP)
-## Date: 2018 fev
+#' @description Ploting the result of ISR comparative study
+#'
+#' @author victorjatoba
+#' @email victorjatoba[at]usp.br
+#' @organization University of Sao Paulo (USP)
+#' @date 2018 fev
+
 
 #choice the theta level range you want to plot
 thetaLevel <- "high"

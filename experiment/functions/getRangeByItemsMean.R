@@ -5,7 +5,7 @@
 #' @organization University of Sao Paulo (USP)
 #' @date 2018 jan
 #' 
-#' @param isr the Item Selection Rule to be runned. Go to
+#' @param isr the name of the Item Selection Rule to be runned. Go to
 #'              uts/isr_compair/ to see the available rules
 #'              Example: "MFI", "KLP", "KL", "MPWI", etc.
 #' @param initValue the initialization loop value
