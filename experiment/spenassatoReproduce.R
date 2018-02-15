@@ -1,4 +1,4 @@
-#' @description Reproducing the Spenassato 2016 work.  
+#' @description Reproducing the Spenassato 2016 work with 2014 ENEM data
 #'
 #' @author victorjatoba
 #' @email victorjatoba[at]usp.br
@@ -43,3 +43,5 @@ for (i in 1:10) {
   # and the range value (initValue and initValue+step)
   rangeByitemsMean <- rbind(rangeByitemsMean, c(interval, sampleLenght, itemsMean, thFinalSE, trueThetaSE))
 }
+
+write.table(rangeByitemsMean, file=paste("outs/spenassato/2014-enem-tabelas2-3-analysis.out", sep=""), row.names=FALSE, col.names=TRUE)
