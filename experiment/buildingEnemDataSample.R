@@ -1,12 +1,28 @@
+#' @description Building ENEM data responses by a sample
+#'
+#' @author victorjatoba
+#' @email victorjatoba[at]usp.br
+#' @organization University of Sao Paulo (USP)
+#' @date 2018 fev
+#' @references 2012, INEP
 
 # Reading ENEM data
-model <- read.csv('/media/victorjatoba/Data/Google\ Drive/Master\ Degree/[VictorJ]\ Project/Enem/microdados_enem2014/DADOS/MICRODADOS_ENEM_2014.csv', nrows = 2000000)
+enem2012 <- '/media/victorjatoba/Data/Google\ Drive/Master\ Degree/[VictorJ]\ Project/Enem/microdados_enem2012/DADOS/DADOS_ENEM_2012.csv'
+enem2014 <- '/media/victorjatoba/Data/Google\ Drive/Master\ Degree/[VictorJ]\ Project/Enem/microdados_enem2014/DADOS/MICRODADOS_ENEM_2014.csv'
+is2012 <- TRUE
+model <- read.csv(enem2012, nrows = 2000000)
 
 # Obtained only Math responses
 res <- subset(model, IN_PRESENCA_MT == 1 & TX_RESPOSTAS_MT != ".............................................")
 
 # Obtained only responses column
-only_responses <- res[c("TX_RESPOSTAS_MT", "GABARITO_MT")]
+if (is2012) {
+  only_responses <- res[c("TX_RESPOSTAS_MT", "DS_GABARITO_MT")]
+  
+} else {
+  only_responses <- res[c("TX_RESPOSTAS_MT", "GABARITO_MT")]
+  
+}
 
 # Building a sample
 samp <- only_responses[ sample(nrow(only_responses), 5000), ]
@@ -39,4 +55,8 @@ for(i in 1:n){
 }
 
 # Storing in a txt file
-write.table(finalMatrixOfResponses, file="data/enem_2014_sample.txt", row.names=FALSE, col.names=FALSE)
+if (is2012) {
+  write.table(finalMatrixOfResponses, file="../data/2012_enem_responses.txt", row.names=FALSE, col.names=FALSE)
+} else {
+  write.table(finalMatrixOfResponses, file="../data/2014_enem_responses.txt", row.names=FALSE, col.names=FALSE)
+}

@@ -1,5 +1,5 @@
 ## @desc Storing the students sample CAT results.
-## @test_name ENEM "Matematica e suas tecnologias" area, from 2014.
+## @test_name ENEM "Matematica e suas tecnologias" area.
 ##
 ## Author: @victorjatoba
 ## Email: victorjatoba[at]usp.br
@@ -20,7 +20,7 @@ Bank <- as.matrix(enem_mat_param)
 
 Start <- list(nrItems = 1, theta = 0, startSelect = "MFI")
 
-isr <- "GDI"
+isr <- "MFI"
 Test <- list(method = "EAP", itemSelect = isr)
 # MFI = Maximum Fisher Information
 # KL
@@ -91,7 +91,7 @@ Final <- list(method = "EAP", alpha = 0.05)
 
 
 ## Loading responses
-fileName <- "./data/2014-enem-responses.txt";
+fileName <- "./data/2012-enem-responses.txt";
 conn <- file(fileName, open = "r")
 linn <- readLines(conn)
 
@@ -142,7 +142,7 @@ print(paste('The ', isr, ' running time is: ', sep = ""))
 toc()
 
 # Storing in a txt file
-write.table(resList, file=paste("outs/isr_compair/",isr,".out", sep=""), row.names=FALSE, col.names=TRUE)
+write.table(resList, file=paste("outs/spenassato/",isr,".out", sep=""), row.names=FALSE, col.names=TRUE)
 
 close(conn)
 close(connTheta)

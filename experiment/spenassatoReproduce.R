@@ -1,4 +1,4 @@
-#' @description Reproducing the Spenassato 2016 work with 2014 ENEM data
+#' @description Reproducing the Spenassato 2016 work with 2012 ENEM data
 #'
 #' @author victorjatoba
 #' @email victorjatoba[at]usp.br
@@ -7,7 +7,7 @@
 #' @references 2016, Spenassato - Testes Adaptativos Computadorizados Aplicados em Avaliacoes Educacionais
 
 isr <- 'MFI'
-isr_path <- paste("outs/isr_compair/",isr,".out", sep="")
+isr_path <- paste("outs/spenassato/",isr,".out", sep="")
 
 ## Loading ISR results
 isr_out = read.table(isr_path, header = TRUE, sep = " ", stringsAsFactors = FALSE)
