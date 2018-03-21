@@ -6,7 +6,7 @@
 #' @date 2018 fev
 #' @references 2016, Spenassato - Testes Adaptativos Computadorizados Aplicados em Avaliacoes Educacionais
 
-isr <- 'MFI'
+isr <- 'GDIP'
 isr_path <- paste("outs/spenassato/",isr,".out", sep="")
 
 ## Loading ISR results

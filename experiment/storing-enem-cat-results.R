@@ -113,7 +113,7 @@ if (!require('tictoc')) install.packages('tictoc')
 library(tictoc)
 tic()
 
-for (i in 1:linnLength) {
+for (i in 1:10) {
   # change response line to table
   responseDataLine <- read.table(textConnection(linn[[i]]))
   matrixResponses <- as.matrix(responseDataLine)
@@ -143,6 +143,8 @@ toc()
 
 # Storing in a txt file
 write.table(resList, file=paste("outs/spenassato/",isr,".out", sep=""), row.names=FALSE, col.names=TRUE)
+
+prmatrix(resList, rowlab = rep("",10))
 
 close(conn)
 close(connTheta)

@@ -13,9 +13,9 @@
 #' @param step the step velocity of the loop
 #' 
 #' @return The intervals of the mean of the selected items quantities
-getRangeByItemsMean = function(isr, initValue, stopValue, step) {
-  isr_path <- paste("outs/isr_compair/",isr,".out", sep="")
-  
+getRangeByItemsMean = function(isr, package, initValue, stopValue, step) {
+  isr_path <- paste("outs/",package,"/",isr,".out", sep="")
+  isr_path
   ## Loading ISR results
   isr_out = read.table(isr_path, header = TRUE, sep = " ", stringsAsFactors = FALSE)
   
