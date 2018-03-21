@@ -6,14 +6,16 @@
 ## Organization: University of Sao Paulo (USP)
 ## Date: 2018 jan
 
-if (!require('catR')) install.packages('catR')
-require('catR')
+#if (!require('catR', lib="./../../R/library")) install.packages("catR", lib="./../../R/library")
+#.libPaths()
+#require('catR', lib="./../../R/library")
 
 # Use catR package
-library("catR")
+library('catR')
+
 
 ## Loading parameters
-enem_mat_param = read.table("data/enem-math.par", header = TRUE, sep = " ", stringsAsFactors = FALSE)
+enem_mat_param = read.table("./../data/enem-math.par", header = TRUE, sep = " ", stringsAsFactors = FALSE)
 
 # Change to Matrix
 Bank <- as.matrix(enem_mat_param)
@@ -44,59 +46,13 @@ Stop <- list(rule = "precision", thr = 0.5)
 Final <- list(method = "EAP", alpha = 0.05)
 #testList(Final, type = "final")
 
-# low knowledge
-#i = 293 #th -1.182060
-#i = 1853 #th -1.07 
-#i = 1798 #th -1.173081
-#i = 2147 #th -1.170712
-#i = 2352 #th -1.176256
-
-# medium knowledge
-#i = 621 #th -1.177539
-
-# high knowledge
-#i = 3790 #th 2.631965
-#i = 43 #th 1.76
-#Selecionar os 800 maiores e avaliar por 10 intervalos (2,0 - 2,1; 2,1 - 2.2)
-
-# weird behaviour
-# i = 846
-# i = 867
-#i = 1245
-#i = 31
-#i = 888
-#i = 123
-#i = 12
-#i = 329
-#i = 4189
-
-# very close
-#i = 7
-#i = 9
-#i = 13
-#i = 19
-#i = 226
-#i = 3294
-#i = 3297
-#i = 3234
-#i = 4111
-#i = 439
-
-# very distant
-#i = 224
-
-# low administered items
-#i = 3534
-#i = 433
-
-
 ## Loading responses
-fileName <- "./data/2012-enem-responses.txt";
+fileName <- "./../data/2012-enem-responses.txt";
 conn <- file(fileName, open = "r")
 linn <- readLines(conn)
 
 ## Loading true thetas
-fileName <- "./data/enem-math.theta";
+fileName <- "./../data/enem-math.theta";
 connTheta <- file(fileName, open = "r")
 linnTheta <- readLines(connTheta)
 
@@ -109,11 +65,11 @@ linnLength <- length(linn)
 i <- 1
 
 ## count running time
-if (!require('tictoc')) install.packages('tictoc')
-library(tictoc)
-tic()
+#if (!require('tictoc')) install.packages('tictoc')
+#library(tictoc)
+#tic()
 
-for (i in 1:10) {
+for (i in 1:linnLength) {
   # change response line to table
   responseDataLine <- read.table(textConnection(linn[[i]]))
   matrixResponses <- as.matrix(responseDataLine)
@@ -138,13 +94,12 @@ for (i in 1:10) {
   
   resList <- rbind(resList, c(isr, finalItemsQttSelected, get("thFinal", res), get("trueTheta", res), get("seFinal", res), get("ciFinal", res)))
 }
-print(paste('The ', isr, ' running time is: ', sep = ""))
-toc()
+#print(paste('The ', isr, ' running time is: ', sep = ""))
+#toc()
 
 # Storing in a txt file
-write.table(resList, file=paste("outs/spenassato/",isr,".out", sep=""), row.names=FALSE, col.names=TRUE)
-
-prmatrix(resList, rowlab = rep("",10))
+#write.table(resList, file=paste("outs/spenassato/",isr,".out", sep=""), row.names=FALSE, col.names=TRUE)
+resList
 
 close(conn)
 close(connTheta)
