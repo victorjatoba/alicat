@@ -7,25 +7,32 @@
 #' @references 2012, INEP
 
 # Reading ENEM data
-enem2012 <- './../../outs/DADOS_ENEM_2012.csv'
+#enem2012 <- './../../outs/DADOS_ENEM_2012.csv'
+enem2012 <- '/media/victorjatoba/Data/Google\ Drive/Master\ Degree/[VictorJ]\ Project/Enem/microdados_enem2012/DADOS/DADOS_ENEM_2012.csv'
 enem2014 <- '/media/victorjatoba/Data/Google\ Drive/Master\ Degree/[VictorJ]\ Project/Enem/microdados_enem2014/DADOS/MICRODADOS_ENEM_2014.csv'
-is2012 <- TRUE
-model <- read.csv(enem2012, nrows = 1000000)
+enem2016 <- '/media/victorjatoba/Data/Google\ Drive/Master\ Degree/[VictorJ]\ Project/Enem/Microdados_enem_2016/DADOS/microdados_enem_2016.csv'
 
-# Obtained only Math responses
-res <- subset(model, IN_PRESENCA_MT == 1 & TX_RESPOSTAS_MT != ".............................................")
+enemChose = 2016
 
-# Obtained only responses column
-if (is2012) {
+if (enemChose == 2012) {
+  model <- read.csv(enem2012, nrows = 100)
+  res <- subset(model, IN_PRESENCA_MT == 1 & TX_RESPOSTAS_MT != ".............................................")
   only_responses <- res[c("TX_RESPOSTAS_MT", "DS_GABARITO_MT")]
   
-} else {
+} else if (enemChose == 2014) {
+  model <- read.csv(enem2014, nrows = 5)
+  res <- subset(model, IN_PRESENCA_MT == 1 & TX_RESPOSTAS_MT != ".............................................")
   only_responses <- res[c("TX_RESPOSTAS_MT", "GABARITO_MT")]
   
+} else {
+  model <- read.csv(enem2016, nrows = 400, sep = ";")
+  res <- subset(model, TP_PRESENCA_MT == 1 & TX_RESPOSTAS_MT != ".............................................")
+  only_responses <- res[c("TX_RESPOSTAS_MT", "TX_GABARITO_MT")]
 }
 
 # Building a sample
-samp <- only_responses[ sample(nrow(only_responses), 200000), ]
+qttExamineesSelected = 100
+samp <- only_responses[ sample(nrow(only_responses), qttExamineesSelected), ]
 
 # Change the sample to a matrix
 mat <- as.matrix(samp)
@@ -55,8 +62,4 @@ for(i in 1:n){
 }
 
 # Storing in a txt file
-if (is2012) {
-  write.table(finalMatrixOfResponses, row.names=FALSE, col.names=FALSE)
-} else {
-  write.table(finalMatrixOfResponses, file="../data/2014_enem_responses.txt", row.names=FALSE, col.names=FALSE)
-}
+write.table(finalMatrixOfResponses, row.names=FALSE, col.names=FALSE)
