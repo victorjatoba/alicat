@@ -15,7 +15,7 @@ library('catR')
 
 
 ## Loading parameters
-enem_mat_param = read.table("./../data/enem-math.par", header = TRUE, sep = " ", stringsAsFactors = FALSE)
+enem_mat_param = read.table("./../data/2012-enem.par", header = TRUE, sep = " ", stringsAsFactors = FALSE)
 
 # Change to Matrix
 Bank <- as.matrix(enem_mat_param)
@@ -47,12 +47,12 @@ Final <- list(method = "EAP", alpha = 0.05)
 #testList(Final, type = "final")
 
 ## Loading responses
-fileName <- "./../data/2012-enem-responses.txt";
+fileName <- "./../data/2012-enem-responses-5k.txt";
 conn <- file(fileName, open = "r")
 linn <- readLines(conn)
 
 ## Loading true thetas
-fileName <- "./../data/enem-math.theta";
+fileName <- "./../data/2012-enem-5k.theta";
 connTheta <- file(fileName, open = "r")
 linnTheta <- readLines(connTheta)
 
@@ -62,7 +62,7 @@ colnames(resList) <- c("Rule", "itemsQttSelected", "thFinal", "trueTheta", "seFi
 
 linnLength <- length(linn)
 #linnLength <- 2
-i <- 1
+#i <- 1
 
 ## count running time
 #if (!require('tictoc')) install.packages('tictoc')
@@ -98,7 +98,7 @@ for (i in 1:linnLength) {
 #toc()
 
 # Storing in a txt file
-#write.table(resList, file=paste("outs/spenassato/",isr,".out", sep=""), row.names=FALSE, col.names=TRUE)
+#write.table(resList, file=paste("outs/5k_examinees/",isr,".out", sep=""), row.names=FALSE, col.names=TRUE)
 resList
 
 close(conn)
