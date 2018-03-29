@@ -15,7 +15,7 @@
 #' @return The intervals of the mean of the selected items quantities
 getRangeByItemsMean = function(isr, package, initValue, stopValue, step) {
   isr_path <- paste("outs/",package,"/",isr,".out", sep="")
-  isr_path
+  
   ## Loading ISR results
   isr_out = read.table(isr_path, header = TRUE, sep = " ", stringsAsFactors = FALSE)
   
