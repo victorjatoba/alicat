@@ -6,7 +6,7 @@
 #' @date 2018 fev
 #' @references 2016, Spenassato - Testes Adaptativos Computadorizados Aplicados em Avaliacoes Educacionais
 
-trueThetaData = read.table("/home/victorjatoba/adapqr/data/enem.theta")
+trueThetaData = read.table("/home/victorjatoba/adapqr/data/2012-enem-5k.theta")
 ## Loading true theta estimated by ICL
 
 ranges <- split(trueThetaData, cut(as.matrix(trueThetaData), c(-2, -1.5, -1, -0.5, 0, 0.5, 1, 1.5, 2, 2.5, 3.5), include.lowest=TRUE))
@@ -48,4 +48,4 @@ for (i in 1:10) {
   rangeByitemsMean <- rbind(rangeByitemsMean, c(interval, sampleLenght, min, max, thetaMean, trueThetaSE))
 }
 
-write.table(rangeByitemsMean, file=paste("outs/spenassato/2012-enem-tabelas2-3-analysis.out", sep=""), row.names=FALSE, col.names=TRUE)
+write.table(rangeByitemsMean, file=paste("outs/5k_examinees/2012/enem-statistics-by-intervals.out", sep=""), row.names=FALSE, col.names=TRUE)
