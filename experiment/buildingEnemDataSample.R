@@ -8,30 +8,32 @@
 
 # Reading ENEM data
 #enem2012 <- './../../outs/DADOS_ENEM_2012.csv'
-enem2012 <- '/media/victorjatoba/Data/Google\ Drive/Master\ Degree/[VictorJ]\ Project/Enem/microdados_enem2012/DADOS/DADOS_ENEM_2012.csv'
-enem2014 <- '/media/victorjatoba/Data/Google\ Drive/Master\ Degree/[VictorJ]\ Project/Enem/microdados_enem2014/DADOS/MICRODADOS_ENEM_2014.csv'
-enem2016 <- '/media/victorjatoba/Data/Google\ Drive/Master\ Degree/[VictorJ]\ Project/Enem/Microdados_enem_2016/DADOS/microdados_enem_2016.csv'
+#enem2012 <- '/media/victorjatoba/Data/Google\ Drive/Master\ Degree/[VictorJ]\ Project/Enem/microdados_enem2012/DADOS/DADOS_ENEM_2012.csv'
+#enem2014 <- '/media/victorjatoba/Data/Google\ Drive/Master\ Degree/[VictorJ]\ Project/Enem/microdados_enem2014/DADOS/MICRODADOS_ENEM_2014.csv'
+#enem2016 <- '/media/victorjatoba/Data/Google\ Drive/Master\ Degree/[VictorJ]\ Project/Enem/Microdados_enem_2016/DADOS/microdados_enem_2016.csv'
+enem2016 <- './../../outs/microdados_enem_2016.csv'
 
 enemChose = 2016
+qttDataToBeExtractFromCSV <- 4000000
 
 if (enemChose == 2012) {
-  model <- read.csv(enem2012, nrows = 100)
+  model <- read.csv(enem2012, nrows = qttDataToBeExtractFromCSV)
   res <- subset(model, IN_PRESENCA_MT == 1 & TX_RESPOSTAS_MT != ".............................................")
   only_responses <- res[c("TX_RESPOSTAS_MT", "DS_GABARITO_MT")]
   
 } else if (enemChose == 2014) {
-  model <- read.csv(enem2014, nrows = 5)
+  model <- read.csv(enem2014, nrows = qttDataToBeExtractFromCSV)
   res <- subset(model, IN_PRESENCA_MT == 1 & TX_RESPOSTAS_MT != ".............................................")
   only_responses <- res[c("TX_RESPOSTAS_MT", "GABARITO_MT")]
   
 } else {
-  model <- read.csv(enem2016, nrows = 400, sep = ";")
+  model <- read.csv(enem2016, nrows = qttDataToBeExtractFromCSV, sep = ";")
   res <- subset(model, TP_PRESENCA_MT == 1 & TX_RESPOSTAS_MT != ".............................................")
   only_responses <- res[c("TX_RESPOSTAS_MT", "TX_GABARITO_MT")]
 }
 
 # Building a sample
-qttExamineesSelected = 100
+qttExamineesSelected = 1000000
 samp <- only_responses[ sample(nrow(only_responses), qttExamineesSelected), ]
 
 # Change the sample to a matrix
