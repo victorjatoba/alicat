@@ -6,8 +6,8 @@
 #' @date 2018 fev
 #' @references 2016, Spenassato - Testes Adaptativos Computadorizados Aplicados em Avaliacoes Educacionais
 
-isr <- 'GDIP'
-isr_path <- paste("outs/spenassato/",isr,".out", sep="")
+isr <- 'MFI'
+isr_path <- paste("outs/5k_examinees/2012/",isr,".out", sep="")
 
 ## Loading ISR results
 isr_out = read.table(isr_path, header = TRUE, sep = " ", stringsAsFactors = FALSE)
@@ -44,4 +44,4 @@ for (i in 1:10) {
   rangeByitemsMean <- rbind(rangeByitemsMean, c(interval, sampleLenght, itemsMean, thFinalSE, trueThetaSE))
 }
 
-write.table(rangeByitemsMean, file=paste("outs/spenassato/2014-enem-tabelas2-3-analysis.out", sep=""), row.names=FALSE, col.names=TRUE)
+write.table(rangeByitemsMean, file=paste("outs/5k_examinees/2012/MFI-statistics-by-intervals.out", sep=""), row.names=FALSE, col.names=TRUE)
