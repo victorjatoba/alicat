@@ -30,6 +30,6 @@ module load R/3.0.2-intel
 
 #Roda o calculo R
 
-time R --no-restore --slave --file=./../experiment/storing-enem-cat-results.R 1> ./../data/200m-2012-enem-responses.txt 2> ./../data/200m-error.txt
+time R --no-restore --slave --file=./../experiment/storing-enem-cat-results.R 1> ./../outs/5k_examinees/2012/MFI.out 2> ./../outs/5k_examinees/2012/error.txt
 
 date

@@ -30,6 +30,6 @@ module load R/3.0.2-intel
 
 #Roda o calculo R
 
-time R --no-restore --slave --file=./../experiment/buildingEnemDataSample.R 1> ./../data/1M_2012_enem_responses.txt 2> ./../data/1M_error.txt
+time R --no-restore --slave --file=./../experiment/buildingEnemDataSample.R 1> ./../data/2016_enem_responses_1M.txt 2> ./../data/2016_1M_error.txt
 
 date

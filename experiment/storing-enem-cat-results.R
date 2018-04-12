@@ -98,8 +98,12 @@ for (i in 1:linnLength) {
 #toc()
 
 # Storing in a txt file
+
+# To print local
 #write.table(resList, file=paste("outs/5k_examinees/",isr,".out", sep=""), row.names=FALSE, col.names=TRUE)
-resList
+#To print by Aguia HPC
+write.table(resList, row.names=FALSE, col.names=TRUE)
+#resList
 
 close(conn)
 close(connTheta)
