@@ -48,4 +48,4 @@ for (i in 1:10) {
   rangeByitemsMean <- rbind(rangeByitemsMean, c(interval, sampleLenght, min, max, thetaMean, trueThetaSE))
 }
 
-write.table(rangeByitemsMean, file=paste("outs/5k_examinees/2012/enem-statistics-by-intervals.out", sep=""), row.names=FALSE, col.names=TRUE)
+write.table(rangeByitemsMean, file=paste("outs/5k_examinees/2012/true-theta-statistics-by-intervals.out", sep=""), row.names=FALSE, col.names=TRUE)
