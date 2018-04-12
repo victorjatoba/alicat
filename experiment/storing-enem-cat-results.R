@@ -15,7 +15,7 @@ library('catR')
 
 
 ## Loading parameters
-enem_mat_param = read.table("./../data/2012-enem.par", header = TRUE, sep = " ", stringsAsFactors = FALSE)
+enem_mat_param = read.table("./../data/2012-enem-bilog.par", header = TRUE, sep = " ", stringsAsFactors = FALSE)
 
 # Change to Matrix
 Bank <- as.matrix(enem_mat_param)
