@@ -22,16 +22,15 @@ isr <- "MFI"
 # Change to Matrix
 bank <- as.matrix(enem_mat_param)
 
-
 ## Loading responses
 fileName <- "./data/2012-enem-responses-5k.txt";
 conn <- file(fileName, open = "r")
 linn <- readLines(conn)
 
-## Loading true thetas
-fileName <- "./data/2012-enem-5k.theta";
-connTheta <- file(fileName, open = "r")
-linnTheta <- readLines(connTheta)
+# ## Loading true thetas
+# fileName <- "./data/2012-enem-5k.theta";
+# connTheta <- file(fileName, open = "r")
+# linnTheta <- readLines(connTheta)
 
 ## List of the results
 resList <- matrix(nrow = 0, ncol = 7)
@@ -39,16 +38,9 @@ colnames(resList) <- c("Rule", "itemsQttSelected", "thFinal", "trueTheta", "seFi
 
 linnLength <- length(linn)
 
+# vector contains the administered items
 removedItems <- matrix(nrow = 1, ncol = 1)
-#linnLength <- 2
-#i <- 1
 
-## count running time
-#if (!require('tictoc')) install.packages('tictoc')
-#library(tictoc)
-#tic()
-
-## SELECT THE FIRST ITEM
 
 i = 1
 for (i in 1:linnLength) {
@@ -56,15 +48,20 @@ for (i in 1:linnLength) {
   responseDataLine <- read.table(textConnection(linn[[i]]))
   matrixResponses <- as.matrix(responseDataLine)
   
-  # change theta line to table
-  truethetaDataLine <- read.table(textConnection(linnTheta[i]))
+  ## selecting 4 items
+
+  # Estimating current examinee hability
+  # Using EAP with 10 quadrature points (same of BILOG)
+  currentTheta <- eapEst(bank, responses, nqp = 10)
   
-  # reading EAP estimated
-  truethetaEAP <- as.matrix(truethetaDataLine[1])
+  # # change theta line to table
+  # truethetaDataLine <- read.table(textConnection(linnTheta[i]))  
+  # # reading the true thetas estimated by ICL software using EAP
+  # truethetaEAP <- as.matrix(truethetaDataLine[1])
   
 
-  # Selecting the next item removing the items alread administered.
-  itemInfo <- nextItem(bank, theta = 3, out = removedItems, criterion = isr)
+  # Selecting the next item.
+  itemInfo <- nextItem(bank, theta = currentTheta, out = removedItems, criterion = isr)
   
   # Removing the item selected above
   itemRemoved <- itemInfo$item
