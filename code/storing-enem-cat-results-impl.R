@@ -38,12 +38,13 @@ colnames(resList) <- c("Rule", "itemsQttSelected", "thFinal", "trueTheta", "seFi
 
 linnLength <- length(linn)
 
-# vector contains the administered items
-removedItems <- matrix(nrow = 0, ncol = 1)
-responsesForAdministeredItems <- matrix(nrow = 0, ncol = 1)
-
 i = 1
 for (i in 1:linnLength) {
+  
+  # vector contains the administered items
+  removedItems <- matrix(nrow = 0, ncol = 1)
+  responsesForAdministeredItems <- matrix(nrow = 0, ncol = 1)
+  
   # change response line to table
   responseDataLine <- read.table(textConnection(linn[[i]]))
   matrixResponses <- as.matrix(responseDataLine)
@@ -70,9 +71,90 @@ for (i in 1:linnLength) {
     
     
     # EAP estimation, standard normal prior distribution
-    #th <- thetaEst(bank, x = matrixResponses, method = "EAP")
     currentTheta <- eapEst(it = bank[removedItems,], x = responsesForAdministeredItems, nqp = 10)
+    
+    #################
+    ## GETTING SE
+    seProv <- semTheta(thProv, PAR, x = PATTERN, 
+                       model = model, D = test$D, method = test$method, 
+                       priorDist = test$priorDist, priorPar = test$priorPar, 
+                       parInt = test$parInt, constantPatt = test$constantPatt)
+    SETH <- c(SETH, seProv)
+    
+    ## STOP RULE
+    stop.cat <- checkStopRule(th = thProv, se = seProv, N = length(PATTERN), it = itemBank[-ITEMS,], model = model, stop = stop)
+    if (stop.cat$decision | length(PATTERN) == nrow(itemBank)) 
+      break
+    #################
+    
+    ### IDENTIFYING 1% AND 5% precision point
+    semTheta()
+    EP1 <- x
+    EP2 <- y
+
+    if (1% j) {
+      parada1% <- j
+    }
+    
+    if (5%) {
+      parada5% <- j
+    }
+    ###
   }
+  
+  
+  
+  #### FINAL ESTIMATION
+  finalEst <- thetaEst(PAR, PATTERN, model = model, 
+                       D = final$D, method = final$method, priorDist = final$priorDist, 
+                       priorPar = final$priorPar, range = final$range, 
+                       parInt = final$parInt)
+  seFinal <- semTheta(finalEst, PAR, x = PATTERN, 
+                      model = model, D = final$D, method = final$method, 
+                      priorDist = final$priorDist, priorPar = final$priorPar, 
+                      parInt = final$parInt)
+  confIntFinal <- c(finalEst - qnorm(1 - final$alpha/2) * 
+                      seFinal, finalEst + qnorm(1 - final$alpha/2) * 
+                      seFinal)
+  
+  
+  if (!stop.cat$decision) 
+    endWarning <- TRUE
+  else endWarning <- FALSE
+  RES <- list(trueTheta = trueTheta, model = model, 
+              testItems = ITEMS, itemPar = PAR, pattern = PATTERN, 
+              thetaProv = TH, seProv = SETH, ruleFinal = stop.cat$rule, 
+              thFinal = finalEst, seFinal = seFinal, ciFinal = confIntFinal, 
+              genSeed = genSeed, startFixItems = start$fixItems, 
+              startSeed = start$seed, startNrItems = start$nrItems, 
+              startTheta = start$theta, startD = start$D, 
+              startRandomesque = start$randomesque, startRandomSeed = start$random.seed, 
+              startSelect = start$startSelect, startCB = startCB, 
+              provMethod = test$method, provDist = test$priorDist, 
+              provPar = test$priorPar, provRange = test$range, 
+              provD = test$D, itemSelect = test$itemSelect, 
+              infoType = test$infoType, randomesque = test$randomesque, 
+              testRandomSeed = test$random.seed, AP = test$AP, 
+              constantPattern = test$constantPatt, cbControl = cbControl, 
+              cbGroup = cbGroup, stopRule = stop$rule, stopThr = stop$thr, 
+              stopAlpha = stop$alpha, endWarning = endWarning, 
+              finalMethod = final$method, finalDist = final$priorDist, 
+              finalPar = final$priorPar, finalRange = final$range, 
+              finalD = final$D, finalAlpha = final$alpha, 
+              save.output = save.output, output = output, 
+              assigned.responses = assigned.responses)
+  class(RES) <- "cat"
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   
   # change theta line to table
   truethetaDataLine <- read.table(textConnection(linnTheta[i]))  
