@@ -38,15 +38,17 @@ colnames(resList) <- c("Rule", "itemsQttSelected", "thFinal", "trueTheta", "seFi
 
 linnLength <- length(linn)
 
-i = 1
-for (i in 1:linnLength) {
+j = 1 #debug
+# loop for 5000 examinees
+for (j in 1:linnLength) {
   
   # vector contains the administered items
   removedItems <- matrix(nrow = 0, ncol = 1)
   responsesForAdministeredItems <- matrix(nrow = 0, ncol = 1)
+  seThetas <- matrix(nrow = 0, ncol = 1)
   
   # change response line to table
-  responseDataLine <- read.table(textConnection(linn[[i]]))
+  responseDataLine <- read.table(textConnection(linn[[j]]))
   matrixResponses <- as.matrix(responseDataLine)
   
   ## FIRST ITEM
@@ -55,109 +57,76 @@ for (i in 1:linnLength) {
   ## Selecting 4 starting items for ability levels between -2 and 2
   # startItems(bank, randomesque = 4, theta = c(-2, 2))
 
-  # Initializing theta
-  currentTheta <- 0
+  # Initializing the estimated theta
+  thetaCurrent <- 0
   
-  for (j in 1: 45) {
+  # To identify the estibility point of the CAT. See Equation 2 from Spenassato (2016)
+  estabilityPoint1Percent <- 0
+  estabilityPoint5Percent <- 0
+
+  
+  #i <- 1 #debug
+  # Loop for the 45 items responses
+  for (i in 1: 45) {
     # Selecting the next item.
-    itemInfo <- nextItem(bank, theta = currentTheta, out = removedItems, criterion = isr)
+    itemInfo <- nextItem(bank, theta = thetaCurrent, out = removedItems, criterion = isr)
     
     # Getting the last item selected
     selectedItem <- itemInfo$item
     
     # Adding the last administered item to the removedItems list
     removedItems <- rbind(removedItems, c(selectedItem))
+    
+    # Storing the response of the selected item
     responsesForAdministeredItems <- rbind(responsesForAdministeredItems, c(matrixResponses[selectedItem]))
     
+    # EAP estimation, standard normal prior distribution with 10 quadrature points
+    # By default, it takes the vector value (-4, 4, 33), that is, 33 quadrature points on the range [-4; 4] (or, by steps of 0.25)
+    thetaCurrent <- eapEst(it = bank[removedItems,], x = responsesForAdministeredItems, nqp = 10)
     
-    # EAP estimation, standard normal prior distribution
-    currentTheta <- eapEst(it = bank[removedItems,], x = responsesForAdministeredItems, nqp = 10)
+    if (i > 1) {
+      # Getting the Standard Error from examinees_i and item_j
+      seCurrent <- semTheta(thetaCurrent, it = bank[removedItems,], x = c(responsesForAdministeredItems),
+                            method = 'EAP', parInt = c(-4,4,10))
     
-    #################
-    ## GETTING SE
-    seProv <- semTheta(thProv, PAR, x = PATTERN, 
-                       model = model, D = test$D, method = test$method, 
-                       priorDist = test$priorDist, priorPar = test$priorPar, 
-                       parInt = test$parInt, constantPatt = test$constantPatt)
-    SETH <- c(SETH, seProv)
-    
-    ## STOP RULE
-    stop.cat <- checkStopRule(th = thProv, se = seProv, N = length(PATTERN), it = itemBank[-ITEMS,], model = model, stop = stop)
-    if (stop.cat$decision | length(PATTERN) == nrow(itemBank)) 
-      break
-    #################
-    
-    ### IDENTIFYING 1% AND 5% precision point
-    semTheta()
-    EP1 <- x
-    EP2 <- y
-
-    if (1% j) {
-      parada1% <- j
+      ### IDENTIFYING THE 1% AND THE 5% estability point of the CAT
+      if (i > 2) {
+        sePrev <- seThetas[length(seThetas)]
+        # checking the 1% stabiliting point. See Equation 2 from Spenassato (2016)
+        if ( estabilityPoint1Percent == 0 && (abs(seCurrent - sePrev) < abs(0.01 * sePrev)) ) {
+          estabilityPoint1Percent <- i
+        }
+        
+        # checking the 5% stabiliting point. See Equation 2 from Spenassato (2016)
+        if ( estabilityPoint5Percent == 0 && (abs(seCurrent - sePrev) < abs(0.05 * sePrev)) ) {
+          estabilityPoint5Percent <- i
+        }
+        
+      }
+      ###
+      
+      seThetas <- rbind(seThetas, c(seCurrent))
     }
     
-    if (5%) {
-      parada5% <- j
-    }
-    ###
+    #i <- i + 1 #debug
   }
   
   
-  
   #### FINAL ESTIMATION
-  finalEst <- thetaEst(PAR, PATTERN, model = model, 
-                       D = final$D, method = final$method, priorDist = final$priorDist, 
-                       priorPar = final$priorPar, range = final$range, 
-                       parInt = final$parInt)
-  seFinal <- semTheta(finalEst, PAR, x = PATTERN, 
-                      model = model, D = final$D, method = final$method, 
-                      priorDist = final$priorDist, priorPar = final$priorPar, 
-                      parInt = final$parInt)
-  confIntFinal <- c(finalEst - qnorm(1 - final$alpha/2) * 
-                      seFinal, finalEst + qnorm(1 - final$alpha/2) * 
+  # EAP estimation, uniform prior distribution upon range [-4,4]
+  finalEst <- thetaEst(it = bank[removedItems,], x = responsesForAdministeredItems, method = "EAP", priorDist = "norm", parInt = c(-4,4,10))
+  
+  seFinal <- semTheta(finalEst, it = bank[removedItems,], x = c(responsesForAdministeredItems),
+           method = 'EAP', parInt = c(-4,4,10))
+
+  alpha <- 0.0001
+  confIntFinal <- c(finalEst - qnorm(1 - alpha/2) * 
+                      seFinal, finalEst + qnorm(1 - alpha/2) * 
                       seFinal)
   
   
-  if (!stop.cat$decision) 
-    endWarning <- TRUE
-  else endWarning <- FALSE
-  RES <- list(trueTheta = trueTheta, model = model, 
-              testItems = ITEMS, itemPar = PAR, pattern = PATTERN, 
-              thetaProv = TH, seProv = SETH, ruleFinal = stop.cat$rule, 
-              thFinal = finalEst, seFinal = seFinal, ciFinal = confIntFinal, 
-              genSeed = genSeed, startFixItems = start$fixItems, 
-              startSeed = start$seed, startNrItems = start$nrItems, 
-              startTheta = start$theta, startD = start$D, 
-              startRandomesque = start$randomesque, startRandomSeed = start$random.seed, 
-              startSelect = start$startSelect, startCB = startCB, 
-              provMethod = test$method, provDist = test$priorDist, 
-              provPar = test$priorPar, provRange = test$range, 
-              provD = test$D, itemSelect = test$itemSelect, 
-              infoType = test$infoType, randomesque = test$randomesque, 
-              testRandomSeed = test$random.seed, AP = test$AP, 
-              constantPattern = test$constantPatt, cbControl = cbControl, 
-              cbGroup = cbGroup, stopRule = stop$rule, stopThr = stop$thr, 
-              stopAlpha = stop$alpha, endWarning = endWarning, 
-              finalMethod = final$method, finalDist = final$priorDist, 
-              finalPar = final$priorPar, finalRange = final$range, 
-              finalD = final$D, finalAlpha = final$alpha, 
-              save.output = save.output, output = output, 
-              assigned.responses = assigned.responses)
-  class(RES) <- "cat"
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
   # change theta line to table
-  truethetaDataLine <- read.table(textConnection(linnTheta[i]))  
+  truethetaDataLine <- read.table(textConnection(linnTheta[j]))  
   # # reading the true thetas estimated by ICL software using EAP
   truethetaEAP <- as.matrix(truethetaDataLine[1])
   
