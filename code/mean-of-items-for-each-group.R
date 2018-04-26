@@ -38,7 +38,7 @@ meanOfEstabilityPoint5Percent <- matrix(nrow = 0, ncol = 1)
 
 groupLength <- 1
 
-n = 1 #debug
+#n = 1 #debug
 # 10 groups of 500 examinees responses. Total 5000 responses
 for (n in 1:10) {
   
