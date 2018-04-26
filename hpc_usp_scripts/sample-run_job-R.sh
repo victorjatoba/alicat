@@ -1,5 +1,5 @@
 #!/bin/bash -v
-#PBS -N Sample-Mining 
+#PBS -N Sample-Mining
 #PBS -l nodes=1:ppn=10
 ##PBS -o stdout_R01
 ##PBS -e stderr_R01
@@ -29,7 +29,6 @@ ulimit -s unlimited
 module load R/3.0.2-intel 
 
 #Roda o calculo R
-
-time R --no-restore --slave --file=./../experiment/buildingEnemDataSample.R 1> ./../data/2016_enem_responses_1M.txt 2> ./../data/2016_1M_error.txt
+time R --no-restore --slave --file=./../code/buildingEnemDataSample.R 1> ./../data/2012_enem_responses_1M.txt 2> ./../data/2012_1M_error.txt
 
 date
