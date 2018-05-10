@@ -13,6 +13,6 @@ output: html_notebook
 
 # DECISIONS #
 
-  [] Rerun the experiments using only the *pink* paper proof
-  [] Define a date to do an apresentation
-  [] Define a next meeting date
+  [x] Rerun the experiments using only the *pink* paper proof
+  [x] Define a date to do an apresentation
+  [x] Define a next meeting date

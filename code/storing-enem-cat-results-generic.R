@@ -15,7 +15,7 @@ library('catR')
 
 
 ## Loading parameters
-enem_mat_param = read.table("./../data/2012-enem-bilog.par", header = TRUE, sep = " ", stringsAsFactors = FALSE)
+enem_mat_param = read.table("./../data/spenassato.par", header = TRUE, sep = " ", stringsAsFactors = FALSE)
 
 # Change to Matrix
 Bank <- as.matrix(enem_mat_param)
@@ -47,12 +47,12 @@ Final <- list(method = "EAP", alpha = 0.05)
 #testList(Final, type = "final")
 
 ## Loading responses
-fileName <- "./../data/2012-enem-responses-5k.txt";
+fileName <- "./../data/spenassato-enem-responses-5k.txt";
 conn <- file(fileName, open = "r")
 linn <- readLines(conn)
 
 ## Loading true thetas
-fileName <- "./../data/2012-enem-5k.theta";
+fileName <- "./../data/spenassato-enem-5k.theta";
 connTheta <- file(fileName, open = "r")
 linnTheta <- readLines(connTheta)
 
