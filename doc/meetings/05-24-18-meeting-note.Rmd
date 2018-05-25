@@ -1,0 +1,22 @@
+---
+title: "Weekly meeting notes"
+date: "05-24-18 mm-dd-yy"
+output: html_notebook
+---
+
+### PLANNED POINTS
+
+  - 
+
+### TASKS
+
+  [] Selecionar apenas usuarios que responderam no minimo 40 questoes
+  [x] Ajustar o cronograma
+
+### DECISIONS
+
+  - Caso os resultados evoluam rapidos, a gente tenta montar um artigo para enviar ao SBIE 18
+  
+### ATTENTION POINT
+
+  - 
