@@ -1,3 +1,4 @@
+###################
 #' @description Reproducing the Spenassato 2016 work with 2012 ENEM data
 #'
 #' @author victorjatoba
@@ -5,6 +6,7 @@
 #' @organization University of Sao Paulo (USP)
 #' @date 2018 fev
 #' @references 2016, Spenassato - Testes Adaptativos Computadorizados Aplicados em Avaliacoes Educacionais
+###################
 
 isr <- 'MFI'
 isr_path <- paste("outs/5k_examinees/2012/",isr,".out", sep="")

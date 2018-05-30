@@ -1,10 +1,11 @@
-## @desc Storing the mean of items administered for implemented CAT
-## @test_name ENEM "Matematica e suas tecnologias" area.
-##
-## Author: @victorjatoba
-## Email: victorjatoba[at]usp.br
-## Organization: University of Sao Paulo (USP)
-## Date: Apr, 2018
+###################
+#' @desc Identifying the stability point of the CAT using 1% and 5% critetions
+#'
+#' @author: @victorjatoba
+#' @email: victorjatoba[at]usp.br
+#' @organization: University of Sao Paulo (USP)
+#' @date: Mai, 2018
+###################
 
 #if (!require('catR', lib="./../../R/library")) install.packages("catR", lib="./../../R/library")
 #.libPaths()
@@ -53,7 +54,7 @@ library('catR')
 ## Loading parameters
 enem_mat_param = read.table("./data/spenassato.par", header = TRUE, sep = " ", stringsAsFactors = FALSE)
 
-isr <- "MFI"
+isr <- "KLP"
 
 # Change to Matrix
 bank <- as.matrix(enem_mat_param)
@@ -133,16 +134,16 @@ for (n in 1:10) {
           # By default, it takes the vector value (-4, 4, 33), that is, 33 quadrature points on the range [-4; 4] (or, by steps of 0.25)
           thetaCurrent <- eapEst(it = bank[removedItems,], x = as.numeric(responsesForAdministeredItems), nqp = 10)
           
-          # if was collected more than 2 responses
-          if ( length(responsesForAdministeredItems) > 1 ) {
+          # if was collected more than 4 responses
+          if ( length(responsesForAdministeredItems) >= 4 ) {
             # Getting the Standard Error from examinees_i and item_j
             seCurrent <- semTheta(thetaCurrent, it = bank[removedItems,], x = as.numeric(responsesForAdministeredItems),
                                   method = 'EAP', parInt = c(-4,4,10))
           
             ### IDENTIFYING THE estability point of the CAT
-            if ( length(seThetas) > 1 ) {
+            if ( length(seThetas) >= 2 ) {
               
-              sePrev <- seThetas[length(seThetas)-1]
+              sePrev <- seThetas[length(seThetas)]
               
               # checking the 1% stabiliting point. See Equation 2 from Spenassato (2016)
               if ( estabilityPoint1Percent == 0 && reachedTheEstabilityPoint(percent = 0.01, sePrev, seCurrent) ) {
@@ -198,8 +199,8 @@ for (n in 1:10) {
 # Storing in a txt file
 
 # To print local
-write.table(meanOfEstabilityPoint1Percent, file=paste("outs/5k_examinees/implemented_cat/2012/meanOfEstabilityPoint1Percent.out", sep=""), row.names=FALSE, col.names=FALSE)
-write.table(meanOfEstabilityPoint5Percent, file=paste("outs/5k_examinees/implemented_cat/2012/meanOfEstabilityPoint5Percent.out", sep=""), row.names=FALSE, col.names=FALSE)
+write.table(meanOfEstabilityPoint1Percent, file=paste("outs/5k_examinees/implemented_cat/2012/KLPmeanOfEstabilityPoint1Percent.out", sep=""), row.names=FALSE, col.names=FALSE)
+write.table(meanOfEstabilityPoint5Percent, file=paste("outs/5k_examinees/implemented_cat/2012/KLPmeanOfEstabilityPoint5Percent.out", sep=""), row.names=FALSE, col.names=FALSE)
 
 mean(meanOfEstabilityPoint1Percent)
 mean(meanOfEstabilityPoint5Percent)

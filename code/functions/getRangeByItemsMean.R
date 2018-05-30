@@ -1,3 +1,4 @@
+###################
 #' @description Separating users by ranges 
 #'
 #' @author victorjatoba
@@ -13,6 +14,8 @@
 #' @param step the step velocity of the loop
 #' 
 #' @return The intervals of the mean of the selected items quantities
+###################
+
 getRangeByItemsMean = function(isr, package, initValue, stopValue, step) {
   isr_path <- paste("outs/",package,"/",isr,".out", sep="")
   
