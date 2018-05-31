@@ -9,7 +9,7 @@
 ###################
 
 isr <- 'MFI'
-isr_path <- paste("outs/5k_examinees/2012/",isr,".out", sep="")
+isr_path <- paste("outs/5k_examinees/implemented_cat/2012/",isr,".out", sep="")
 
 ## Loading ISR results
 isr_out = read.table(isr_path, header = TRUE, sep = " ", stringsAsFactors = FALSE)
@@ -46,4 +46,4 @@ for (i in 1:10) {
   rangeByitemsMean <- rbind(rangeByitemsMean, c(interval, sampleLenght, itemsMean, thFinalSE, trueThetaSE))
 }
 
-write.table(rangeByitemsMean, file=paste("outs/5k_examinees/2012/MFI-statistics-by-intervals.out", sep=""), row.names=FALSE, col.names=TRUE)
+write.table(rangeByitemsMean, file=paste("outs/5k_examinees/implemented_cat/2012/MFI-statistics-by-intervals.out", sep=""), row.names=FALSE, col.names=TRUE)

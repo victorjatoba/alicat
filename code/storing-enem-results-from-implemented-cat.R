@@ -57,7 +57,7 @@ library('catR')
 ## Loading parameters
 enem_mat_param = read.table("./data/spenassato.par", header = TRUE, sep = " ", stringsAsFactors = FALSE)
 
-isr <- "MFI"
+isr <- "MPWI"
 # MFI = Maximum Fisher Information
 # KL
 # KLP
@@ -81,7 +81,7 @@ connTheta <- file(fileName, open = "r")
 linnTheta <- readLines(connTheta)
 
 ## List of the results
-resList <- matrix(nrow = 0, ncol = 7)
+resList <- matrix(nrow = 0, ncol = 5)
 colnames(resList) <- c("Rule", "itemsQttSelected", "thFinal", "trueTheta", "seFinal")
 
 groupLength <- 1
@@ -119,9 +119,9 @@ for (n in 1:10) {
 
     if ( answerMoreThan40Items(matrixResponses) ) {
       
-      # i <- 1
+      i <- 1
       # loop on 45 items' responses
-      for (i in 1:45) {
+      while (i <= 45) {
         # Selecting the next item.
         itemInfo <- nextItem(bank, theta = thetaCurrent, out = removedItems, criterion = isr)
         
@@ -164,7 +164,7 @@ for (n in 1:10) {
           }
         }
         
-        # i <- i + 1
+        i <- i + 1
       } #\ 45 itens responses
       
       # storing the result
@@ -190,8 +190,11 @@ for (n in 1:10) {
   
 } #\ 10 groups
 
-#To print by Aguia HPC
-write.table(resList, row.names=FALSE, col.names=TRUE)
+# To print local
+write.table(resList, file=paste("outs/5k_examinees/implemented_cat/2012/local/",isr,".out", sep=""), row.names=FALSE, col.names=TRUE)
+
+# To print by Aguia HPC
+#write.table(resList, row.names=FALSE, col.names=TRUE)
 
 close(conn)
 close(connTheta)
