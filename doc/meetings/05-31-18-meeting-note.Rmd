@@ -1,0 +1,23 @@
+---
+title: "Weekly meeting notes"
+date: "05-24-18 mm-dd-yy"
+output: html_notebook
+---
+
+### PLANNED POINTS
+
+  - 
+
+### TASKS
+
+  [] Plotar as figuras 1, 2 e 3 do trabalho do Chen 2000
+  [] Plotar as figuras 2 do trabalho do Chen 2004
+  [] Utilizar também o critério aleatório para ISR
+
+### DECISIONS
+
+  - Caso os resultados evoluam rapidos, a gente tenta montar um artigo para enviar ao SBIE 18
+  
+### ATTENTION POINT
+
+  - 

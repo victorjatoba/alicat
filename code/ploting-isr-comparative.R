@@ -44,11 +44,11 @@ if (thetaLevel == "high") {
 
 
 step <- 0.1
-package <- "5k_examinees/implemented_cat/2012"
+package <- "5k_examinees/implemented_cat/2012/local"
 mfiResult  <- getRangeByItemsMean("MFI", package, initValue, stopValue, step)[,1]
-klResult   <- getRangeByItemsMean("KL", package, initValue, stopValue, step)[,1]
-meiResult  <- getRangeByItemsMean("MEI", package, initValue, stopValue, step)[,1]
-#klpResult  <- getRangeByItemsMean("KLP", package, initValue, stopValue, step)[,1]
+#klResult   <- getRangeByItemsMean("KL", package, initValue, stopValue, step)[,1]
+#meiResult  <- getRangeByItemsMean("MEI", package, initValue, stopValue, step)[,1]
+klpResult  <- getRangeByItemsMean("KLP", package, initValue, stopValue, step)[,1]
 #mpwiResult <- getRangeByItemsMean("MPWI", package, initValue, stopValue, step)[,1]
 #gdiResult <- getRangeByItemsMean("GDI", package, initValue, stopValue, step)[,1]
 #gdipResult <- getRangeByItemsMean("GDIP", package, initValue, stopValue, step)[,1]
@@ -99,11 +99,11 @@ box()
 lines(mfiOldResult, type="o", pch=5, lty=4, col="blue")
 
 # KL Graphic with red dashed line and square points
-lines(klResult, type="o", pch=4, lty=2, col="green")
+#lines(klResult, type="o", pch=4, lty=2, col="green")
 # MEI Graphic with green dashed line and square points
-lines(meiResult, type="o", pch=5, lty=4, col="darkgreen")
+#lines(meiResult, type="o", pch=5, lty=4, col="darkgreen")
 # KLP Graphic with green dashed line and square points
-#lines(klpResult, type="o", pch=5, lty=4, col="darkgreen")
+lines(klpResult, type="o", pch=5, lty=4, col="darkgreen")
 # MPWI Graphic with purple dashed line and square points
 #lines(mpwiResult, type="o", pch=10, lty=6, col="purple")
 # MPWI Graphic with purple dashed line and square points
@@ -117,8 +117,8 @@ lines(meiResult, type="o", pch=5, lty=4, col="darkgreen")
 #legend('bottomleft',g_range[2], c("MFI", "KL", "KLP", "MPWI",  "GDI", "GDIP"), cex=0.3, 
 #       col=c("blue", "green", "darkgreen", "purple", "red", "orange"), pch=11:12, lty=1:2)
 
-legend('bottomleft',g_range[2], c("MFI", "KL", "MEI"), cex=0.3, 
-       col=c("blue", "green", "darkgreen"), pch=11:12, lty=1:2)
+legend('topleft',g_range[2], c("MFI", "KLP"), cex=0.4, 
+       col=c("blue", "darkgreen"), pch=11:12, lty=1:2)
 
 title(main=paste("ISRs performance from ", thetaLevel ," thetas (th)", sep = ""), sub="[th, th[",
       ylab="selected items quantities", xlab="Range of thetas level") 
