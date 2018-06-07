@@ -25,7 +25,7 @@ getRangeByItemsMean = function(isr, package, initValue, stopValue, step) {
   rangeByitemsMean <- matrix(nrow = 0, ncol = 3)
   colnames(rangeByitemsMean) <- c("ItemsMean", "rangeV1", "rangeV2")
   
-  # 10 intervals (2, 2.1, 2.2, ..., 2.9)
+  # 10 intervals (-2, -2.1, -2.2, ..., 2.9)
   for (initValue in seq(initValue, stopValue, by = step)) {
     
     # getting subset of users between initValue and initValue+step

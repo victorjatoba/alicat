@@ -57,7 +57,7 @@ library('catR')
 ## Loading parameters
 enem_mat_param = read.table("./data/spenassato.par", header = TRUE, sep = " ", stringsAsFactors = FALSE)
 
-isr <- "MPWI"
+isr <- "random"
 # MFI = Maximum Fisher Information
 # KL
 # KLP
@@ -66,6 +66,8 @@ isr <- "MPWI"
 # MEI
 # MLWI
 # MPWI
+# random
+# progressive
 
 # Change to Matrix
 bank <- as.matrix(enem_mat_param)
@@ -82,7 +84,7 @@ linnTheta <- readLines(connTheta)
 
 ## List of the results
 resList <- matrix(nrow = 0, ncol = 5)
-colnames(resList) <- c("Rule", "itemsQttSelected", "thFinal", "trueTheta", "seFinal")
+colnames(resList) <- c("Rule", "itemsQttSelected", "thFinal", "seFinal")
 
 groupLength <- 1
 
@@ -191,7 +193,7 @@ for (n in 1:10) {
 } #\ 10 groups
 
 # To print local
-write.table(resList, file=paste("outs/5k_examinees/implemented_cat/2012/local/",isr,".out", sep=""), row.names=FALSE, col.names=TRUE)
+write.table(resList, file=paste("outs/5k_examinees/implemented_cat/2012/local/",isr,"2.out", sep=""), row.names=FALSE, col.names=TRUE)
 
 # To print by Aguia HPC
 #write.table(resList, row.names=FALSE, col.names=TRUE)

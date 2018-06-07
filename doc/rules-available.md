@@ -37,8 +37,8 @@ date: oct 2017
  (van der Linden, 1998; van der Linden and Pashley, 2000)
  Supose to be the FI with a Posterior distribution ( FIP ). Here is imposed a posterior distribution as a weight function. (Chen, 2000)
 
+'random'
+'progressive', 
 'bOpt',
 'MEPV', 
-'progressive', 
 'proportional'
-'random'

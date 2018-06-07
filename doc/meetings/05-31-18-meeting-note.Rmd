@@ -10,9 +10,11 @@ output: html_notebook
 
 ### TASKS
 
+  [x] Finalizar a coleta das estatísticas das ISRs
+  [x] Plotar o grafico comparativo das ISRs
   [] Plotar as figuras 1, 2 e 3 do trabalho do Chen 2000
   [] Plotar as figuras 2 do trabalho do Chen 2004
-  [] Utilizar também o critério aleatório para ISR
+  [x] Utilizar também o critério aleatório para ISR
 
 ### DECISIONS
 

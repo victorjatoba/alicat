@@ -1,0 +1,29 @@
+---
+title: "Weekly meeting notes"
+date: "05-24-18 mm-dd-yy"
+output: html_notebook
+---
+
+### PLANNED POINTS
+
+  - 
+
+### TASKS
+
+  [x] Passar os artigos do Chen
+  [] Colocar tabelas 2 e 3 da Spenassato no artigo
+  [] Colocar Figura da comparação das diferentes regras no artigo
+  [] Mandar o BIAS médio ou o RMSE
+
+  [] Plotar as figuras 1, 2 e 3 do trabalho do Chen 2000
+  [] Plotar as figuras 2 do trabalho do Chen 2004
+
+
+### DECISIONS
+
+  - Enviaremos um artigo para o SBIE 18
+  - Se organizar para se dedicar pelo menos 4h por dia útil e 8h nos fins de semana
+  
+### ATTENTION POINT
+
+  - 
