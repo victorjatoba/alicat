@@ -10,10 +10,14 @@ output: html_notebook
 
 ### TASKS
 
+  V.Jatobá:
   [x] Passar os artigos do Chen
   [] Colocar tabelas 2 e 3 da Spenassato no artigo
   [] Colocar Figura da comparação das diferentes regras no artigo
-  [] Mandar o BIAS médio ou o RMSE
+  [] Mandar o BIAS médio ou o RMSE até terça (12/07)
+
+  Karina
+  [] Montar esqueleto do artigo para o SBIE18
 
   [] Plotar as figuras 1, 2 e 3 do trabalho do Chen 2000
   [] Plotar as figuras 2 do trabalho do Chen 2004

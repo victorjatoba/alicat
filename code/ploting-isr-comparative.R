@@ -60,7 +60,7 @@ progressiveResult <- getRangeByItemsMean("progressive", package, initValue, stop
 
 plot(mfiResult, type = "o",
      ylim=g_range,
-     col="Blue", axes=FALSE, ann=FALSE)
+     col="yellow", axes=FALSE, ann=FALSE)
 
 
 if (thetaLevel == "high") {
@@ -119,7 +119,7 @@ lines(gdiResult, type="o", pch=15, lty=15, col="red")
 lines(gdipResult, type="o", pch=20, lty=18, col="orange")
 
 # Random Graphic with purple dashed line and square points
-lines(randomResult, type="o", pch=23, lty=3, col="blue")
+lines(randomResult, type="o", pch=23, lty=3, col="black")
 # Random2 Graphic with purple dashed line and square points
 lines(random2Result, type="o", pch=23, lty=3, col="darkblue")
 # GDIP Graphic with purple dashed line and square points
@@ -132,7 +132,7 @@ lines(progressiveResult, type="o", pch=33, lty=13, col="gray")
 #       col=c("blue", "green", "darkgreen", "purple", "red", "orange"), pch=11:12, lty=1:2)
 
 legend('topleft',g_range[2], c("MFI", "KL", "KLP", "MPWI", "MLWI", "GDI", "GDIP", "Random", "Random2", "Progres.."), cex=0.18, 
-       col=c("yellow","green", "darkgreen", "purple", "pink", "red", "orange", "blue", "darkblue", "gray"), pch=11:12, lty=1:2)
+       col=c("yellow","green", "darkgreen", "purple", "pink", "red", "orange", "black", "darkblue", "gray"), pch=11:12, lty=1:2)
 
 title(main=paste("ISRs performance from ", thetaLevel ," thetas (th)", sep = ""), sub="[th, th[",
       ylab="Quantities of selected items", xlab="Thetas' level range") 
