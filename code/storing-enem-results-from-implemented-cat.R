@@ -7,12 +7,15 @@
 #' @Date: Mai, 2018
 ###################
 
+## LIBS ##
+
 #if (!require('catR', lib="./../../R/library")) install.packages("catR", lib="./../../R/library")
 #.libPaths()
 #require('catR', lib="./../../R/library")
 
 # Use catR package
 library('catR')
+library(jsonlite)
 
 ## FUNCTIONS ##
 
@@ -77,49 +80,59 @@ fileName <- "./data/spenassato-enem-responses-5k.txt";
 conn <- file(fileName, open = "r")
 linn <- readLines(conn)
 
+## Loading data
+fileName <- "./data/spenassato-enem-data-5k.txt";
+connData <- file(fileName, open = "r")
+linnData <- readLines(connData)
+
 # ## Loading true thetas
 fileName <- "./data/spenassato-enem-5k.theta";
 connTheta <- file(fileName, open = "r")
 linnTheta <- readLines(connTheta)
 
 ## List of the results
-resList <- matrix(nrow = 0, ncol = 5)
-colnames(resList) <- c("Rule", "itemsQttSelected", "thFinal", "seFinal")
+resList <- matrix(nrow = 0, ncol = 7)
+colnames(resList) <- c("UserId", "ThTrue", "ThFinal", "ItemsQttSelected", "AdministeredItemsList", "ThEstimatedList", "SeThetasList")
+resList <- data.frame(resList)
+
+resListVectors <- matrix(nrow = 0, ncol = 3)
+colnames(resListVectors) <- c("Id", "EstimatedThetas", "EstimatedSE")
 
 groupLength <- 1
 
-# n = 1
+# n = 2
 # 10 groups of 500 examinees responses. Total 5000 responses
 for (n in 1:10) {
   
   groupResponsesN <- linn[groupLength:((groupLength-1)+500)]
+  groupDataN <- linnData[groupLength:((groupLength-1)+500)+1]
 
   # 500 examinees responses
-  # j = 447
+  # j = 446
   for (j in 1:500) {
     
     # initializing vector contains the administered items
     removedItems <- matrix(nrow = 0, ncol = 1)
+    administeredItems <- matrix(nrow = 0, ncol = 1)
     responsesForAdministeredItems <- matrix(nrow = 0, ncol = 1)
     seThetas <- matrix(nrow = 0, ncol = 1)
+    estimatedThetas <- matrix(nrow = 0, ncol = 1)
     
     # change response line to table
     responseDataLine <- read.table(textConnection(groupResponsesN[[j]]))
     matrixResponses <- as.matrix(responseDataLine)
-    
-    ## FIRST ITEM
-    # Selecting 1 starting item, initial ability estimate is 0
-    #itemSelected <- startItems(bank)
-    ## Selecting 4 starting items for ability levels between -2 and 2
-    # startItems(bank, randomesque = 4, theta = c(-2, 2))
-    
-    # Initializing the estimated theta
-    thetaCurrent <- 0
-    
-    # To identify the estibility point of the CAT. See Equation 2 from Spenassato (2016)
-    finalItemsQttSelected <- 0
 
     if ( answerMoreThan40Items(matrixResponses) ) {
+      
+      # Initializing the estimated theta
+      thetaCurrent <- 0
+      
+      # To identify the estibility point of the CAT. See Equation 2 from Spenassato (2016)
+      finalItemsQttSelected <- 0
+      
+      # storing the user ID and it true theta
+      userId <- read.table(textConnection(groupDataN[[j]]))[1]
+      trueTheta <- read.table(textConnection(groupDataN[[j]]))[2]
       
       i <- 1
       # loop on 45 items' responses
@@ -135,12 +148,16 @@ for (n in 1:10) {
         
         if ( answerTheItem(matrixResponses[selectedItem]) ) {
           
+          # Storing the selected item
+          administeredItems <- rbind(administeredItems, c(selectedItem))
+          
           # Storing the response of the selected item
           responsesForAdministeredItems <- rbind(responsesForAdministeredItems, c(matrixResponses[selectedItem]))
           
           # EAP estimation, standard normal prior distribution with 10 quadrature points
           # By default, it takes the vector value (-4, 4, 33), that is, 33 quadrature points on the range [-4; 4] (or, by steps of 0.25)
           thetaCurrent <- eapEst(it = bank[removedItems,], x = as.numeric(responsesForAdministeredItems), nqp = 10)
+          estimatedThetas <- rbind(estimatedThetas, c(thetaCurrent))
           
           # if was collected more than 4 responses
           if ( length(responsesForAdministeredItems) >= 4 ) {
@@ -164,26 +181,22 @@ for (n in 1:10) {
             
             seThetas <- rbind(seThetas, c(seCurrent))
           }
-        }
+        } # if answerTheItem()
         
         i <- i + 1
-      } #\ 45 itens responses
+      } #\ 45 itens loop responses
       
       # storing the result
-      resList <- rbind(resList, c(isr, finalItemsQttSelected, thetaCurrent, seCurrent))
+      resList <- rbind(resList, 
+                       data.frame(UserId = userId,
+                                  ThTrue = trueTheta,
+                                  ThFinal = thetaCurrent,
+                                  ItemsQttSelected = finalItemsQttSelected,
+                                  AdministeredItemsList = I(list(c(administeredItems))),
+                                  ThEstimatedList = I(list(c(estimatedThetas))),
+                                  SeThetasList = I(list(c(seThetas)))
+                       ))
     }
-    
-    #### FINAL ESTIMATION
-    # EAP estimation, uniform prior distribution upon range [-4,4]
-    #finalEst <- thetaEst(it = bank[removedItems,], x = responsesForAdministeredItems, method = "EAP", priorDist = "norm", parInt = c(-4,4,10))
-    
-    #seFinal <- semTheta(finalEst, it = bank[removedItems,], x = c(responsesForAdministeredItems),
-    #         method = 'EAP', parInt = c(-4,4,10))
-    
-    #alpha <- 0.0001
-    #confIntFinal <- c(finalEst - qnorm(1 - alpha/2) * 
-    #                    seFinal, finalEst + qnorm(1 - alpha/2) * 
-    #                    seFinal)
     
   } #\ 500 examinees responses
   
@@ -192,11 +205,14 @@ for (n in 1:10) {
   
 } #\ 10 groups
 
-# To print local
-write.table(resList, file=paste("outs/5k_examinees/implemented_cat/2012/local/",isr,"2.out", sep=""), row.names=FALSE, col.names=TRUE)
+# To print by local PC
+write.table(resList, file=paste("outs/5k_examinees/implemented_cat/2012/local/data-",isr,".out", sep=""), row.names=FALSE, col.names=TRUE)
+jsonFile = toJSON(resList, pretty=T, auto_unbox = T)
+write(jsonFile, file=paste("outs/5k_examinees/implemented_cat/2012/local/data-",isr,".json", sep=""))
 
 # To print by Aguia HPC
 #write.table(resList, row.names=FALSE, col.names=TRUE)
 
 close(conn)
+close(connData)
 close(connTheta)
