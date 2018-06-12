@@ -34,7 +34,7 @@ calculateSeThetasMean <- function(seThetasList) {
 }
 #########
 
-isr <- 'KLP'
+isr <- 'MPWI'
 path <- paste("outs/5k_examinees/implemented_cat/2012/local/")
 isrPath <- paste(path,"data-",isr,".json", sep="")
 
