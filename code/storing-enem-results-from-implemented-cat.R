@@ -60,7 +60,7 @@ library('catR')
 ## Loading parameters
 enem_mat_param = read.table("./data/spenassato.par", header = TRUE, sep = " ", stringsAsFactors = FALSE)
 
-isr <- "MFI"
+isr <- "MPWI"
 # MFI = Maximum Fisher Information
 # KL
 # KLP
@@ -100,7 +100,7 @@ colnames(resListVectors) <- c("Id", "EstimatedThetas", "EstimatedSE")
 
 groupLength <- 1
 
-# n = 2
+# n = 1
 # 10 groups of 500 examinees responses. Total 5000 responses
 for (n in 1:10) {
   
