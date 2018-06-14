@@ -12,15 +12,30 @@
 #' @param initValue the initialization loop value
 #' @param stopValue the stop loop criteria
 #' @param step the step velocity of the loop
+#' @param format should be out or json
 #' 
 #' @return The intervals of the mean of the selected items quantities
 ###################
 
-getRangeByItemsMean = function(isr, package, initValue, stopValue, step) {
-  isr_path <- paste("outs/",package,"/",isr,".out", sep="")
+## LIBS ##
+library(jsonlite)
+##########
+
+getRangeByItemsMean = function(isr, package, initValue, stopValue, step, format = "out") {
+
+  # mounting path
+  file = paste(isr , ".", format, sep = "")
+  if (format == "json") {
+    file = paste("data-", file, sep = "")
+  }
+  isrPath <- paste("outs/",package,"/",file, sep="")
   
   ## Loading ISR results
-  isr_out = read.table(isr_path, header = TRUE, sep = " ", stringsAsFactors = FALSE)
+  if (format == "json") {
+    isr_out = fromJSON(isrPath)
+  } else {
+    isr_out = read.table(isrPath, header = TRUE, sep = " ", stringsAsFactors = FALSE)
+  }
   
   rangeByitemsMean <- matrix(nrow = 0, ncol = 3)
   colnames(rangeByitemsMean) <- c("ItemsMean", "rangeV1", "rangeV2")
@@ -30,10 +45,10 @@ getRangeByItemsMean = function(isr, package, initValue, stopValue, step) {
     
     # getting subset of users between initValue and initValue+step
     # thFinal is the isr_out attribute
-    range <- subset(isr_out, thFinal>=initValue & thFinal<(initValue+step))
+    range <- subset(isr_out, ThFinal>=initValue & ThFinal<(initValue+step))
     
     # the mean of the range of the selected items quantities
-    itemsMean <- mean(range$itemsQttSelected)
+    itemsMean <- mean(range$ItemsQttSelected)
     
     # storing the mean of the items selected (itemsMean)
     # and the range value (initValue and initValue+step)

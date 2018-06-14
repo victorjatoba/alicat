@@ -5,6 +5,59 @@
 #' @organization University of Sao Paulo (USP)
 #' @date 2018 fev
 
+## FUNCTIONS ##
+
+#' @description Calculate the SE thetas mean
+#' 
+#' @param seFinalList The list of SE thetas
+#' @return number
+printLines <- function(g_range, rules, mfi, kl, klp, mlwi, mpwi, gdi, gdip) {
+  rulesColors <- matrix(nrow = 1, ncol = 0)
+  for( i in 1:length(rules) ) {
+    if (rules[i] == "MFI") {
+      lines(mfi, type="o", pch=5, lty=4, col="blue")
+      rulesColors <- cbind(rulesColors, c("blue"))
+    } else if (rules[i] == "KL") {
+      lines(kl, type="o", pch=4, lty=2, col="green")
+      rulesColors <- cbind(rulesColors, c("green"))
+      
+    } else if (rules[i] == "KLP") {
+      lines(klp, type="o", pch=25, lty=5, col="darkgreen")
+      rulesColors <- cbind(rulesColors, c("darkgreen"))
+      
+    } else if (rules[i] == "MLWI") {
+      lines(mlwi, type="o", pch=10, lty=6, col="purple")
+      rulesColors <- cbind(rulesColors, c("purple"))
+      
+    } else if (rules[i] == "MPWI") {
+      lines(mpwi, type="o", pch=12, lty=7, col="brown")
+      rulesColors <- cbind(rulesColors, c("brown"))
+
+    } else if (rules[i] == "GDI") {
+      lines(gdi, type="o", pch=15, lty=15, col="red")
+      rulesColors <- cbind(rulesColors, c("red"))
+      
+    } else if (rules[i] == "GDIP") {
+      lines(gdip, type="o", pch=20, lty=18, col="orange")
+      rulesColors <- cbind(rulesColors, c("orange"))
+    }
+  }
+  
+  #lines(randomResult, type="o", pch=23, lty=3, col="black")
+  #lines(random2Result, type="o", pch=23, lty=3, col="darkblue")
+  #lines(progressiveResult, type="o", pch=33, lty=13, col="gray")
+  
+  # legend('topleft',g_range[2], rules , cex=0.25, text.width = 1,
+  #       col=c(rulesColors), pch=11:12, lty=1:2)
+
+  legend('topleft',g_range[2], rules , text.width = 2,
+        col=c(rulesColors), lty = c(4, 2, 5, 6, 7, 15, 18), pch = c(5, 4, 25, 10, 12, 15, 20))
+  # legend('topleft',g_range[2], rules, col = c(rulesColors),
+  #         lty = c(2, -1, 1), pch = c(NA, 3, 4),
+  #         merge = TRUE, text.width = 2)
+}
+#########
+
 
 #choice the theta level range you want to plot
 #thetaLevel <- "high"
@@ -45,22 +98,24 @@ if (thetaLevel == "high") {
 
 step <- 0.1
 package <- "5k_examinees/implemented_cat/2012/local"
-mfiResult  <- getRangeByItemsMean("MFI", package, initValue, stopValue, step)[,1]
-klResult   <- getRangeByItemsMean("KL", package, initValue, stopValue, step)[,1]
-#meiResult  <- getRangeByItemsMean("MEI", package, initValue, stopValue, step)[,1]
-klpResult  <- getRangeByItemsMean("KLP", package, initValue, stopValue, step)[,1]
-mlwiResult <- getRangeByItemsMean("MLWI", package, initValue, stopValue, step)[,1]
-mpwiResult <- getRangeByItemsMean("MPWI", package, initValue, stopValue, step)[,1]
-gdiResult <- getRangeByItemsMean("GDI", package, initValue, stopValue, step)[,1]
-gdipResult <- getRangeByItemsMean("GDIP", package, initValue, stopValue, step)[,1]
+format = "json"
 
-randomResult <- getRangeByItemsMean("random", package, initValue, stopValue, step)[,1]
-random2Result <- getRangeByItemsMean("random2", package, initValue, stopValue, step)[,1]
-progressiveResult <- getRangeByItemsMean("progressive", package, initValue, stopValue, step)[,1]
+mfiResult  <- getRangeByItemsMean("MFI", package, initValue, stopValue, step, format)[,1]
+klResult   <- getRangeByItemsMean("KL", package, initValue, stopValue, step, format)[,1]
+#meiResult  <- getRangeByItemsMean("MEI", package, initValue, stopValue, step, format)[,1]
+klpResult  <- getRangeByItemsMean("KLP", package, initValue, stopValue, step, format)[,1]
+mlwiResult <- getRangeByItemsMean("MLWI", package, initValue, stopValue, step, format)[,1]
+mpwiResult <- getRangeByItemsMean("MPWI", package, initValue, stopValue, step, format)[,1]
+#gdiResult <- getRangeByItemsMean("GDI", package, initValue, stopValue, step, format)[,1]
+#gdipResult <- getRangeByItemsMean("GDIP", package, initValue, stopValue, step, format)[,1]
+
+#randomResult <- getRangeByItemsMean("random", package, initValue, stopValue, step, format)[,1]
+#random2Result <- getRangeByItemsMean("random2", package, initValue, stopValue, step, format)[,1]
+#progressiveResult <- getRangeByItemsMean("progressive", package, initValue, stopValue, step, format)[,1]
 
 plot(mfiResult, type = "o",
      ylim=g_range,
-     col="yellow", axes=FALSE, ann=FALSE)
+     col="blue", axes=FALSE, ann=FALSE)
 
 
 if (thetaLevel == "high") {
@@ -101,38 +156,24 @@ axis(2, cex.axis=0.7, las=2, at=1*0:(g_range[2]))
 # Create box around plot
 box()
 
-lines(mfiOldResult, type="o", pch=5, lty=4, col="yellow")
 
-# KL Graphic with red dashed line and square points
-lines(klResult, type="o", pch=4, lty=2, col="green")
-# MEI Graphic with green dashed line and square points
-#lines(meiResult, type="o", pch=5, lty=4, col="darkgreen")
-# KLP Graphic with green dashed line and square points
-lines(klpResult, type="o", pch=25, lty=5, col="darkgreen")
-# MLWI Graphic with purple dashed line and square points
-lines(mlwiResult, type="o", pch=10, lty=6, col="purple")
-# MPWI Graphic with purple dashed line and square points
-lines(mpwiResult, type="o", pch=12, lty=7, col="pink")
-# GDI Graphic with purple dashed line and square points
-lines(gdiResult, type="o", pch=15, lty=15, col="red")
-# GDIP Graphic with purple dashed line and square points
-lines(gdipResult, type="o", pch=20, lty=18, col="orange")
-
-# Random Graphic with purple dashed line and square points
-lines(randomResult, type="o", pch=23, lty=3, col="black")
-# Random2 Graphic with purple dashed line and square points
-lines(random2Result, type="o", pch=23, lty=3, col="darkblue")
-# GDIP Graphic with purple dashed line and square points
-lines(progressiveResult, type="o", pch=33, lty=13, col="gray")
+printLines(g_range,
+            c("MFI", "KL", "KLP", "MPWI", "MLWI"),
+            mfi = mfiResult,
+            kl = klResult,
+            klp = klpResult,
+            mlwi = mlwiResult,
+            mpwi = mpwiResult
+          )
 
 # Create a legend at (1, g_range[2]) that is slightly smaller 
 # (cex) and uses the same line colors and points used by the actual plots 
 
-#legend('bottomleft',g_range[2], c("MFI", "KL", "KLP", "MPWI",  "GDI", "GDIP"), cex=0.3, 
-#       col=c("blue", "green", "darkgreen", "purple", "red", "orange"), pch=11:12, lty=1:2)
+# title(main=paste("ISRs performance from ", thetaLevel ," thetas (th)", sep = ""), sub="[th, th[",
+#       ylab="Administered items", xlab="Thetas' level range")
 
-legend('topleft',g_range[2], c("MFI", "KL", "KLP", "MPWI", "MLWI", "GDI", "GDIP", "Random", "Random2", "Progres.."), cex=0.18, 
-       col=c("yellow","green", "darkgreen", "purple", "pink", "red", "orange", "black", "darkblue", "gray"), pch=11:12, lty=1:2)
-
-title(main=paste("ISRs performance from ", thetaLevel ," thetas (th)", sep = ""), sub="[th, th[",
-      ylab="Quantities of selected items", xlab="Thetas' level range") 
+# PT
+title(main=paste("Desempenho das Regras de Seleção de Itens", sep = ""), sub= expression(paste("[ ", hat(theta), ", ", hat(theta)," [" )),
+      ylab="Quantide de itens selecionados",
+      # xlab="Grupos de thetas estimados",
+      expression(paste("Grupos de thetas estimados (", hat(theta), ")")))
