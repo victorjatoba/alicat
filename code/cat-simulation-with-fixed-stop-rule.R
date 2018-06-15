@@ -52,7 +52,7 @@ stopRuleLenght <- function(isr) {
 ## Loading parameters
 enem_mat_param = read.table("./data/spenassato.par", header = TRUE, sep = " ", stringsAsFactors = FALSE)
 
-isr <- "MFI"
+isr <- "MLWI"
 # MFI = Maximum Fisher Information
 # KL
 # KLP
@@ -97,6 +97,7 @@ groupLength <- 1
 totalOfExaminees <- 0
 
 sumDifferenceOfThetasHatAndTrue <- 0
+sqrtSumDifferenceOfThetasHatAndTrue <- 0
 
 # n = 1
 # 10 groups of 500 examinees responses. Total 5000 responses
