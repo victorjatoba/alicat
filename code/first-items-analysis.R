@@ -1,10 +1,10 @@
 ###################
-#' @desc Running the ISRs using a fixed stop rule. It is necessary to calculate the statistics like BIAS and RMSE.
+#' @desc This code analyze the RMSE, BIAS and SE of the early CAT stage.
 #'
 #' @Author: @victorjatoba
 #' @Email: victorjatoba[at]usp.br
 #' @Organization: University of Sao Paulo (USP)
-#' @Date: Mai, 2018
+#' @Date: Jun, 2018
 ###################
 
 ## LIBS ##
@@ -13,40 +13,10 @@
 library('catR')
 library(jsonlite)
 
-# Using local functions
-# source("answerTheItem.R")
 ##########
 
 ## FUNCTIONS ##
 
-#' @description The Stop Rule lenght for each ISR
-#' @references see Table 2 from Jatoba (2018) (SBIE18 paper subimmited)
-#' 
-#' @param isr The Item Selection Rule
-#' @return boolean
-stopRuleLenght <- function(isr) {
-  lenght <- -1
-  
-  if ( isr == "MFI" ) {
-    lenght <- 35
-    
-  } else if ( isr == "KL" ) {
-    lenght <- 21
-  
-  } else if ( isr == "KLP" ) {
-    lenght <- 24
-  
-  } else if ( isr == "MLWI" ) {
-    lenght <- 23
-  
-  } else if ( isr == "MPWI" ) {
-    lenght <- 18
-  }
-  
-  return (
-    lenght
-  )
-}
 ###############
 
 ## Loading parameters
@@ -56,14 +26,14 @@ isr <- "MFI"
 # MFI = Maximum Fisher Information
 # KL
 # KLP
+# MLWI
+# MPWI
 # GDI
 # GDIP
 # MEI
-# MLWI
-# MPWI
 # random
 # progressive
-stopRuleLenght <- stopRuleLenght(isr)
+stopRuleLenght <- 35 #the biggest ISR stop rule (from MFI. See: cat-simulation-with-fixed-stop-rule.R)
 
 # Change to Matrix
 bank <- as.matrix(enem_mat_param)
@@ -83,13 +53,6 @@ fileName <- "./data/spenassato-enem-5k.theta";
 connTheta <- file(fileName, open = "r")
 linnTheta <- readLines(connTheta)
 
-## List of the results
-resList <- matrix(nrow = 0, ncol = 7)
-colnames(resList) <- c("UserId", "ThTrue", "ThFinal", "ItemsQttSelected", "AdministeredItemsList", "ThEstimatedList", "SeThetasList")
-resList <- data.frame(resList)
-# 
-# resListVectors <- matrix(nrow = 0, ncol = 3)
-# colnames(resListVectors) <- c("Id", "EstimatedThetas", "EstimatedSE")
 
 groupLength <- 1
 
@@ -116,6 +79,8 @@ for (n in 1:10) {
     administeredItems <- matrix(nrow = 0, ncol = 1)
     responsesForAdministeredItems <- matrix(nrow = 0, ncol = 1)
     seThetas <- matrix(nrow = 0, ncol = 1)
+    biasList <- matrix(nrow = 0, ncol = 1)
+    rmseList <- matrix(nrow = 0, ncol = 1)
     estimatedThetas <- matrix(nrow = 0, ncol = 1)
     
     # change response line to table
@@ -129,7 +94,7 @@ for (n in 1:10) {
       # Initializing the estimated theta
       thetaHat <- 0
       
-      # storing the user ID and it true theta
+      # storing the user ID and its true theta
       userId <- read.table(textConnection(groupDataN[[j]]))[1]
       trueTheta <- read.table(textConnection(groupDataN[[j]]))[2]
       
@@ -166,22 +131,21 @@ for (n in 1:10) {
             
             seThetas <- rbind(seThetas, c(seCurrent))
           }
+          
+          # calculating Sums
+          sumDifferenceOfThetasHatAndTrue <- sumDifferenceOfThetasHatAndTrue + (thetaHat - trueTheta)
+          squareSumDifferenceOfThetasHatAndTrue <- squareSumDifferenceOfThetasHatAndTrue + (thetaHat - trueTheta)^2
+          
+          # calculating statistics
+          BIAS <- sumDifferenceOfThetasHatAndTrue / totalOfExaminees
+          RMSE <- sqrt( squareSumDifferenceOfThetasHatAndTrue / totalOfExaminees)
+          
+          biasList <- rbind(biasList, c(BIAS))
+          rmseList <- rbind(rmseList, c(RMSE))
         } # if answerTheItem()
         
       } # fixed Stop Rule loop
-      
-      # storing the result
-      # resList <- rbind(resList,
-      #                  data.frame(UserId = userId,
-      #                             ThTrue = trueTheta,
-      #                             ThFinal = thetaHat,
-      #                             AdministeredItemsList = I(list(c(administeredItems))),
-      #                             ThEstimatedList = I(list(c(estimatedThetas))),
-      #                             SeThetasList = I(list(c(seThetas)))
-      #                  ))
-      
-      sumDifferenceOfThetasHatAndTrue <- sumDifferenceOfThetasHatAndTrue + (thetaHat - trueTheta)
-      squareSumDifferenceOfThetasHatAndTrue <- squareSumDifferenceOfThetasHatAndTrue + (thetaHat - trueTheta)^2
+            
     } # answer more than 40 items
     
   } #\ 500 examinees responses
@@ -191,13 +155,10 @@ for (n in 1:10) {
   
 } #\ 10 groups
 
-# BIAS <- (sum(resList$ThFinal - trueTheta)) / length(resList$ThFinal)
-BIAS <- sumDifferenceOfThetasHatAndTrue / totalOfExaminees
-RMSE <- sqrt( squareSumDifferenceOfThetasHatAndTrue / totalOfExaminees)
 
 # To print by local PC
-write.table(BIAS, file=paste("outs/5k_examinees/implemented_cat/2012/local/fixed_stop_rule/bias-",isr,"2.out", sep=""))
-write(RMSE, file=paste("outs/5k_examinees/implemented_cat/2012/local/fixed_stop_rule/rmse-",isr,"2.json", sep=""))
+write.table(biasList, file=paste("outs/5k_examinees/implemented_cat/2012/local/fixed_stop_rule/bias-",isr,".out", sep=""))
+write(rmseList, file=paste("outs/5k_examinees/implemented_cat/2012/local/fixed_stop_rule/rmse-",isr,".json", sep=""))
 
 # To print by Aguia HPC
 #write.table(resList, row.names=FALSE, col.names=TRUE)
