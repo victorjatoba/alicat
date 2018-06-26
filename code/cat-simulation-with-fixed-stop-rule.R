@@ -52,7 +52,7 @@ stopRuleLenght <- function(isr) {
 ## Loading parameters
 enem_mat_param = read.table("./data/spenassato.par", header = TRUE, sep = " ", stringsAsFactors = FALSE)
 
-isr <- "MLWI"
+isr <- "MPWI"
 # MFI = Maximum Fisher Information
 # KL
 # KLP
