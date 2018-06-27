@@ -53,6 +53,10 @@ fileName <- "./data/spenassato-enem-5k.theta";
 connTheta <- file(fileName, open = "r")
 linnTheta <- readLines(connTheta)
 
+# the list of statistics by each examinee. +2 is userID, thTrue and thHat
+resList <- matrix(nrow = 0, ncol = 7)
+colnames(resList) <- c("UserId", "ThTrue", "ThFinal", "EstimatedThetas", "BiasList", "RmseList", "SeThetasList")
+resList <- data.frame(resList)
 
 groupLength <- 1
 
@@ -70,7 +74,7 @@ for (n in 1:10) {
   groupDataN <- linnData[groupLength:((groupLength-1)+500)+1]
 
   # 500 examinees responses
-  # j = 1
+  # j = 3
   # j = 446
   for (j in 1:500) {
     
@@ -146,6 +150,16 @@ for (n in 1:10) {
         
       } # fixed Stop Rule loop
             
+      resList <- rbind(resList,
+                          data.frame(UserId = userId,
+                                     ThTrue = trueTheta,
+                                     ThFinal = thetaHat,
+                                     EstimatedThetas = I(list(c(estimatedThetas))),
+                                     BiasList = I(list(c(biasList))),
+                                     RmseList = I(list(c(rmseList))),
+                                     SeThetasList = I(list(c(seThetas)))
+                          ))
+            
     } # answer more than 40 items
     
   } #\ 500 examinees responses
@@ -157,8 +171,12 @@ for (n in 1:10) {
 
 
 # To print by local PC
-write.table(biasList, file=paste("outs/5k_examinees/implemented_cat/2012/local/fixed_stop_rule/bias-",isr,".out", sep=""))
-write(rmseList, file=paste("outs/5k_examinees/implemented_cat/2012/local/fixed_stop_rule/rmse-",isr,".json", sep=""))
+#write.table(biasList, file=paste("outs/5k_examinees/implemented_cat/2012/local/fixed_stop_rule/bias-",isr,".out", sep=""))
+#write(rmseList, file=paste("outs/5k_examinees/implemented_cat/2012/local/fixed_stop_rule/rmse-",isr,".json", sep=""))
+#write(seThetas, file=paste("outs/5k_examinees/implemented_cat/2012/local/fixed_stop_rule/rmse-",isr,".json", sep=""))
+
+jsonFile = toJSON(resList, pretty=T)
+write(jsonFile, file=paste("outs/thesis/first_items_analysis/",isr,"-statistics.json", sep=""))
 
 # To print by Aguia HPC
 #write.table(resList, row.names=FALSE, col.names=TRUE)
