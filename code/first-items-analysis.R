@@ -8,10 +8,12 @@
 ###################
 
 ## LIBS ##
+libDir <- "~/R/x86_64-pc-linux-gnu-library"
+if (!require('catR', lib=libDir)) install.packages("catR", lib=libDir)
+if (!require('jsonlite', lib=libDir)) install.packages("jsonlite", lib=libDir)
 
-# Importing packages
 library('catR')
-library(jsonlite)
+library('jsonlite')
 
 ##########
 
@@ -33,7 +35,6 @@ isr <- "MFI"
 # MEI
 # random
 # progressive
-stopRuleLenght <- 35 #the biggest ISR stop rule (from MFI. See: cat-simulation-with-fixed-stop-rule.R)
 
 # Change to Matrix
 bank <- as.matrix(enem_mat_param)
@@ -58,12 +59,20 @@ resList <- matrix(nrow = 0, ncol = 7)
 colnames(resList) <- c("UserId", "ThTrue", "ThFinal", "EstimatedThetas", "BiasList", "RmseList", "SeThetasList")
 resList <- data.frame(resList)
 
+
+## INIT VALUES ##
 groupLength <- 1
 
-# The total of examinees that answer more than 40 items
-totalOfExaminees <- 0
+#the biggest ISR stop rule (from MFI. See: cat-simulation-with-fixed-stop-rule.R)
+stopRuleLenght <- 35
 
+# The total of examinees that answer more than 40 items
+totalOfExaminees <- 4979
+
+# The sum of the difference between thetas hat and true thetas
 sumDifferenceOfThetasHatAndTrue <- 0
+
+# The square of the sum of the difference between thetas hat and true thetas
 squareSumDifferenceOfThetasHatAndTrue <- 0
 
 # n = 1
@@ -92,8 +101,6 @@ for (n in 1:10) {
     matrixResponses <- as.matrix(responseDataLine)
 
     if ( answerMoreThan40Items(matrixResponses) ) {
-      
-      totalOfExaminees <- totalOfExaminees + 1
       
       # Initializing the estimated theta
       thetaHat <- 0
@@ -141,7 +148,7 @@ for (n in 1:10) {
           squareSumDifferenceOfThetasHatAndTrue <- squareSumDifferenceOfThetasHatAndTrue + (thetaHat - trueTheta)^2
           
           # calculating statistics
-          BIAS <- sumDifferenceOfThetasHatAndTrue / totalOfExaminees
+          BIAS <- as.matrix(sumDifferenceOfThetasHatAndTrue / totalOfExaminees) # using matrix to fix biasList column form resList to use c()
           RMSE <- sqrt( squareSumDifferenceOfThetasHatAndTrue / totalOfExaminees)
           
           biasList <- rbind(biasList, c(BIAS))
