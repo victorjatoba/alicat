@@ -24,7 +24,7 @@ library('jsonlite')
 ## Loading parameters
 enem_mat_param = read.table("./data/spenassato.par", header = TRUE, sep = " ", stringsAsFactors = FALSE)
 
-isr <- "MFI"
+isr <- "MPWI"
 # MFI = Maximum Fisher Information
 # KL
 # KLP
