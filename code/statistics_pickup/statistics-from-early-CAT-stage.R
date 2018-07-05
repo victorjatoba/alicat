@@ -1,5 +1,5 @@
 ###################
-#' @desc This code analyze the RMSE, BIAS and SE of the early CAT stage.
+#' @desc Analyze the RMSE, BIAS and SE of the early CAT stage.
 #'
 #' @Author: @victorjatoba
 #' @Email: victorjatoba[at]usp.br
