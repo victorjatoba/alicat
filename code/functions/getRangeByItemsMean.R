@@ -22,7 +22,7 @@ library(jsonlite)
 ##########
 
 getRangeByItemsMean = function(isr, package, initValue, stopValue, step, format = "out") {
-
+  
   # mounting path
   file = paste(isr , ".", format, sep = "")
   if (format == "json") {

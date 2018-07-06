@@ -1,9 +1,9 @@
-#' @description Ploting the result of ISR comparative study
+#' @description Plot the comparative study of the ISRs on the early stage of CAT
 #'
 #' @author victorjatoba
 #' @email victorjatoba[at]usp.br
 #' @organization University of Sao Paulo (USP)
-#' @date 2018 fev
+#' @date 2018, jul
 
 ## FUNCTIONS ##
 
@@ -67,7 +67,7 @@ thetaLevel <- "all"
 g_range <- matrix()
 
 # x
-initValue <- -2
+initValue <- -3
 stopValue <- 3
 
 # y
@@ -77,20 +77,19 @@ g_range[2] <- 3
 
 step <- 1
 package <- "statistics_from_early_cat_stage"
-format = "json"
 
-mfiResult  <- getRangeByItemsMean("MFI", package, initValue, stopValue, step, format)[,1]
-klResult   <- getRangeByItemsMean("KL", package, initValue, stopValue, step, format)[,1]
-#meiResult  <- getRangeByItemsMean("MEI", package, initValue, stopValue, step, format)[,1]
-klpResult  <- getRangeByItemsMean("KLP", package, initValue, stopValue, step, format)[,1]
-mlwiResult <- getRangeByItemsMean("MLWI", package, initValue, stopValue, step, format)[,1]
-mpwiResult <- getRangeByItemsMean("MPWI", package, initValue, stopValue, step, format)[,1]
-#gdiResult <- getRangeByItemsMean("GDI", package, initValue, stopValue, step, format)[,1]
-#gdipResult <- getRangeByItemsMean("GDIP", package, initValue, stopValue, step, format)[,1]
+mfiResult  <- getStatisticsByEarlyCatStage("MFI", package, initValue, stopValue, step)
+klResult   <- getStatisticsByEarlyCatStage("KL", package, initValue, stopValue, step)[,1]
+#meiResult  <- getStatisticsByEarlyCatStage("MEI", package, initValue, stopValue, step, format)[,1]
+klpResult  <- getStatisticsByEarlyCatStage("KLP", package, initValue, stopValue, step)[,1]
+mlwiResult <- getStatisticsByEarlyCatStage("MLWI", package, initValue, stopValue, step)[,1]
+mpwiResult <- getStatisticsByEarlyCatStage("MPWI", package, initValue, stopValue, step)[,1]
+#gdiResult <- getStatisticsByEarlyCatStage("GDI", package, initValue, stopValue, step, format)[,1]
+#gdipResult <- getStatisticsByEarlyCatStage("GDIP", package, initValue, stopValue, step, format)[,1]
 
-#randomResult <- getRangeByItemsMean("random", package, initValue, stopValue, step, format)[,1]
-#random2Result <- getRangeByItemsMean("random2", package, initValue, stopValue, step, format)[,1]
-#progressiveResult <- getRangeByItemsMean("progressive", package, initValue, stopValue, step, format)[,1]
+#randomResult <- getStatisticsByEarlyCatStage("random", package, initValue, stopValue, step, format)[,1]
+#random2Result <- getStatisticsByEarlyCatStage("random2", package, initValue, stopValue, step, format)[,1]
+#progressiveResult <- getStatisticsByEarlyCatStage("progressive", package, initValue, stopValue, step, format)[,1]
 
 plot(mfiResult, type = "o",
      ylim=g_range,
