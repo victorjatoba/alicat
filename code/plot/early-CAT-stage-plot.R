@@ -66,38 +66,17 @@ printLines <- function(g_range, rules, mfi, kl, klp, mlwi, mpwi, gdi, gdip) {
 thetaLevel <- "all"
 g_range <- matrix()
 
-if (thetaLevel == "high") {
-  # Range from (initValue) to (stopValue)
-  initValue <- 1.5
-  stopValue <- 3
-  
-  # Calculate range from 0 to max value of the all rules
-  g_range[1] <- 6
-  g_range[2] <- 18
-  
-} else if (thetaLevel == "medium") {
-  initValue <- 0.1
-  stopValue <- 1.5
-  
-  g_range[1] <- 12
-  g_range[2] <- 45
-} else if (thetaLevel == "low") {
-  initValue <- -1.7
-  stopValue <- 0.1
-  
-  g_range[1] <- 44
-  g_range[2] <- 46
-} else {
-  initValue <- -1.7
-  stopValue <- 3
-  
-  g_range[1] <- 0
-  g_range[2] <- 45
-}
+# x
+initValue <- -2
+stopValue <- 3
+
+# y
+g_range[1] <- -3
+g_range[2] <- 3
 
 
-step <- 0.1
-package <- "5k_examinees/implemented_cat/2012/local"
+step <- 1
+package <- "statistics_from_early_cat_stage"
 format = "json"
 
 mfiResult  <- getRangeByItemsMean("MFI", package, initValue, stopValue, step, format)[,1]

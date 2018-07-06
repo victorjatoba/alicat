@@ -183,7 +183,7 @@ for (n in 1:10) {
 #write(seThetas, file=paste("outs/5k_examinees/implemented_cat/2012/local/fixed_stop_rule/rmse-",isr,".json", sep=""))
 
 jsonFile = toJSON(resList, pretty=T)
-write(jsonFile, file=paste("outs/thesis/first_items_analysis/",isr,"-statistics.json", sep=""))
+write(jsonFile, file=paste("outs/statistics_from_early_cat_stage/",isr,"-statistics.json", sep=""))
 
 # To print by Aguia HPC
 #write.table(resList, row.names=FALSE, col.names=TRUE)
