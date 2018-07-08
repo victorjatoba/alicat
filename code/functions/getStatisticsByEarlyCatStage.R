@@ -1,3 +1,20 @@
+#' @description Calculate the mean of the values there are on list column
+#' 
+#' @param list The list of values
+#' @param col the column of the list
+#' @return the mean of the column values
+meanOfCol <- function(list, col) {
+  sum = 0
+  qtd = length(list)
+  for(i in 1:qtd) {
+    sum = sum + list[[i]][col]
+  }
+  mean <- sum/qtd
+  
+  return (mean)
+}
+
+
 ###################
 #' @description Get the statistics (BIAS, RMSE and SE) of the ISR from the CAT early stage
 #'
@@ -44,42 +61,45 @@ getStatisticsByEarlyCatStage = function(isr, package, initValue, stopValue, step
                                        
                                        "rangeV1", "rangeV2")
   
-  # 10 intervals (-2, -2.1, -2.2, ..., 2.9)
+  # 6 intervals (-2, -1, 0, ..., 4)
   for (initValue in seq(initValue, stopValue, by = step)) {
-    
     # getting subset of users between initValue and initValue+step
     # thFinal is the isr_out attribute
-    range <- subset(isr_out, ThFinal>=initValue & ThFinal<(initValue+step))
+    range <- subset(isr_out, ThTrue >= initValue & ThTrue < (initValue+step))
 
     if (length(range$BiasList) > 0) {
+      list = range$BiasList
       # the BIAS mean for the first items administered
-      biasMean1Item <- mean(range$BiasList[[1]])
-      biasMean2Item <- mean(range$BiasList[[2]])
-      biasMean3Item <- mean(range$BiasList[[3]])
-      biasMean4Item <- mean(range$BiasList[[4]])
-      biasMean5Item <- mean(range$BiasList[[5]])
-      biasMean10Item <- mean(range$BiasList[[10]])
-      biasMean20Item <- mean(range$BiasList[[20]])
-      biasMean30Item <- mean(range$BiasList[[30]])
+      biasMean1Item <- meanOfCol(list, col=1)
+      biasMean2Item <- meanOfCol(list, col=2)
+      biasMean3Item <- meanOfCol(list, col=3)
+      biasMean4Item <- meanOfCol(list, col=4)
+      biasMean5Item <- meanOfCol(list, col=5)
+      biasMean10Item <- meanOfCol(list, col=10)
+      biasMean20Item <- meanOfCol(list, col=20)
+      biasMean30Item <- meanOfCol(list, col=30)
+
+      list = range$RmseList
+      # the BIAS mean for the first items administered
+      rmseMean1Item <- meanOfCol(list, col=1)
+      rmseMean2Item <- meanOfCol(list, col=2)
+      rmseMean3Item <- meanOfCol(list, col=3)
+      rmseMean4Item <- meanOfCol(list, col=4)
+      rmseMean5Item <- meanOfCol(list, col=5)
+      rmseMean10Item <- meanOfCol(list, col=10)
+      rmseMean20Item <- meanOfCol(list, col=20)
+      rmseMean30Item <- meanOfCol(list, col=30)
       
+      list = range$SeThetasList
       # the BIAS mean for the first items administered
-      rmseMean1Item <- mean(range$RmseList[[1]])
-      rmseMean2Item <- mean(range$RmseList[[2]])
-      rmseMean3Item <- mean(range$RmseList[[3]])
-      rmseMean4Item <- mean(range$RmseList[[4]])
-      rmseMean5Item <- mean(range$RmseList[[5]])
-      rmseMean10Item <- mean(range$RmseList[[10]])
-      rmseMean20Item <- mean(range$RmseList[[20]])
-      rmseMean30Item <- mean(range$RmseList[[30]])
-      
-      # the BIAS mean for the first items administered
-      seMean2Item <- mean(range$SeThetasList[[2]])
-      seMean3Item <- mean(range$SeThetasList[[3]])
-      seMean4Item <- mean(range$SeThetasList[[4]])
-      seMean5Item <- mean(range$SeThetasList[[5]])
-      seMean10Item <- mean(range$SeThetasList[[10]])
-      seMean20Item <- mean(range$SeThetasList[[20]])
-      seMean30Item <- mean(range$SeThetasList[[30]])
+      seMean1Item <- meanOfCol(list, col=1)
+      seMean2Item <- meanOfCol(list, col=2)
+      seMean3Item <- meanOfCol(list, col=3)
+      seMean4Item <- meanOfCol(list, col=4)
+      seMean5Item <- meanOfCol(list, col=5)
+      seMean10Item <- meanOfCol(list, col=10)
+      seMean20Item <- meanOfCol(list, col=20)
+      seMean30Item <- meanOfCol(list, col=30)
       
       # storing the mean of the items selected (itemsMean)
       # and the range value (initValue and initValue+step)
