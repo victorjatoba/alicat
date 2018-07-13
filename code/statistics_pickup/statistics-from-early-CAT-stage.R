@@ -69,12 +69,6 @@ stopRuleLenght <- 35
 # The total of examinees that answer more than 40 items
 totalOfExaminees <- 4979
 
-# The sum of the difference between thetas hat and true thetas
-sumDifferenceOfThetasHatAndTrue <- 0
-
-# The square of the sum of the difference between thetas hat and true thetas
-squareSumDifferenceOfThetasHatAndTrue <- 0
-
 # n = 1
 # 10 groups of 500 examinees responses. Total 5000 responses
 for (n in 1:10) {
@@ -110,7 +104,7 @@ for (n in 1:10) {
       trueTheta <- read.table(textConnection(groupDataN[[j]]))[2]
       
       # loop for fixed Stop Rule
-      # i = 1
+      # i = 3
       for (i in 1:stopRuleLenght) {
         # Selecting the next item.
         itemInfo <- nextItem(bank, theta = thetaHat, out = removedItems, criterion = isr)
@@ -143,16 +137,19 @@ for (n in 1:10) {
             seThetas <- rbind(seThetas, c(seCurrent))
           }
           
+          differenceOfThetasHatAndTrue <- (thetaHat - trueTheta)
+          squareDifferenceOfThetasHatAndTrue <- (thetaHat - trueTheta)^2
+          
           # calculating Sums
-          sumDifferenceOfThetasHatAndTrue <- sumDifferenceOfThetasHatAndTrue + (thetaHat - trueTheta)
-          squareSumDifferenceOfThetasHatAndTrue <- squareSumDifferenceOfThetasHatAndTrue + (thetaHat - trueTheta)^2
+        #  sumDifferenceOfThetasHatAndTrue <- sumDifferenceOfThetasHatAndTrue + (thetaHat - trueTheta)
+        #  squareSumDifferenceOfThetasHatAndTrue <- squareSumDifferenceOfThetasHatAndTrue + (thetaHat - trueTheta)^2
           
           # calculating statistics
-          BIAS <- as.matrix(sumDifferenceOfThetasHatAndTrue / totalOfExaminees) # using matrix to fix biasList column form resList to use c()
-          RMSE <- sqrt( squareSumDifferenceOfThetasHatAndTrue / totalOfExaminees)
+        #  BIAS <- as.matrix(sumDifferenceOfThetasHatAndTrue / totalOfExaminees) # using matrix to fix biasList column form resList to use c()
+        #  RMSE <- sqrt( squareSumDifferenceOfThetasHatAndTrue / totalOfExaminees)
           
-          biasList <- rbind(biasList, c(BIAS))
-          rmseList <- rbind(rmseList, c(RMSE))
+        #  biasList <- rbind(biasList, c(BIAS))
+        #  rmseList <- rbind(rmseList, c(RMSE))
         } # if answerTheItem()
         
       } # fixed Stop Rule loop

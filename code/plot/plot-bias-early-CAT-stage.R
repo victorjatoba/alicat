@@ -11,7 +11,7 @@
 #' 
 #' @param seFinalList The list of SE thetas
 #' @return number
-printLines <- function(g_range, rules, mfi, kl, klp, mlwi, mpwi, gdi, gdip) {
+printLines <- function(rules, mfi, kl, klp, mlwi, mpwi, gdi, gdip) {
   rulesColors <- matrix(nrow = 1, ncol = 0)
   for( i in 1:length(rules) ) {
     if (rules[i] == "MFI") {
@@ -43,18 +43,26 @@ printLines <- function(g_range, rules, mfi, kl, klp, mlwi, mpwi, gdi, gdip) {
     }
   }
   
-  #lines(randomResult, type="o", pch=23, lty=3, col="black")
-  #lines(random2Result, type="o", pch=23, lty=3, col="darkblue")
-  #lines(progressiveResult, type="o", pch=33, lty=13, col="gray")
-  
-  # legend('topleft',g_range[2], rules , cex=0.25, text.width = 1,
-  #       col=c(rulesColors), pch=11:12, lty=1:2)
+  return (rulesColors)
+}
 
-  legend('topright',g_range[2], rules , merge = TRUE, cex=0.8, text.width = 0.8,
-        col=c(rulesColors), lty = c(4, 2, 5, 6, 7, 15, 18), pch = c(5, 4, 25, 10, 12, 15, 20))
-  # legend('topleft',g_range[2], rules, col = c(rulesColors),
-  #         lty = c(2, -1, 1), pch = c(NA, 3, 4),
-  #         merge = TRUE, text.width = 2)
+printBorder = function(data, g_range, item, letter) {
+  plot(data, type = "o",
+       ylim=g_range,
+       col="blue", axes=FALSE, ann=FALSE)
+  
+  axis(1, cex.axis=0.7, at=1:6, lab=c("[-2, -1]", "]-1, 0]", "]0, 1]", "]1, 2]", "]2, 3]", "]3, 4]"))
+  
+  # Make y axis with horizontal labels that display ticks at 
+  # every 4 marks. 4*0:g_range[2] is equivalent to c(0,4,8,12).
+  axis(2, cex.axis=0.7, las=2, at=g_range[1]:g_range[2])
+  
+  # Create box around plot
+  box()
+  titleUpper = paste(letter, ". Item ", item, " ", sep = "")
+  title(main = titleUpper  , xlab = expression(theta),
+        ylab="Bias")
+  
 }
 #########
 
@@ -66,8 +74,8 @@ initValue <- -4
 stopValue <- 3
 
 # y
-g_range[1] <- -2
-g_range[2] <- 7
+g_range[1] <- -3
+g_range[2] <- 2
 
 
 step <- 1
@@ -79,110 +87,106 @@ klpResult  <- getStatisticsByEarlyCatStage("KLP", package, initValue, stopValue,
 mlwiResult <- getStatisticsByEarlyCatStage("MLWI", package, initValue, stopValue, step)
 mpwiResult <- getStatisticsByEarlyCatStage("MPWI", package, initValue, stopValue, step)
 
-plot(as.data.frame(mfiResult)$BiasMean1Item, type = "o",
-     ylim=g_range,
-     col="blue", axes=FALSE, ann=FALSE)
+# joint images on a figure with 4 col and 2 lines
+par(mfrow = c(2,4))
+par(oma = c(0,0,3,3))
+par(mar=c(5,4,4,2)+0.1)
 
-
-
-axis(1, cex.axis=0.7, at=1:6, lab=c("[-2, -1]", "]-1, 0]", "]0, 1]", "]1, 2]", "]2, 3]", "]3, 4]"))
-
-# Make y axis with horizontal labels that display ticks at 
-# every 4 marks. 4*0:g_range[2] is equivalent to c(0,4,8,12).
-axis(2, cex.axis=0.7, las=2, at=g_range[1]:g_range[2])
-
-# Create box around plot
-box()
 
 # 1 ITEM
-printLines(g_range,
-            c("MFI", "KL", "KLP", "MLWI", "MPWI"),
-            mfi = as.data.frame(mfiResult)$BiasMean1Item,
-            kl = as.data.frame(klResult)$BiasMean1Item,
-            klp = as.data.frame(klpResult)$BiasMean1Item,
-            mlwi = as.data.frame(mlwiResult)$BiasMean1Item,
-            mpwi = as.data.frame(mpwiResult)$BiasMean1Item
+printBorder(data = as.data.frame(mfiResult)$BiasItem1, g_range, 1, 'a')
+printLines(c("MFI", "KL", "KLP", "MLWI", "MPWI"),
+            mfi = as.data.frame(mfiResult)$BiasItem1,
+            kl = as.data.frame(klResult)$BiasItem1,
+            klp = as.data.frame(klpResult)$BiasItem1,
+            mlwi = as.data.frame(mlwiResult)$BiasItem1,
+            mpwi = as.data.frame(mpwiResult)$BiasItem1
           )
 
 # 2 ITEM
-printLines(g_range,
-           c("MFI", "KL", "KLP", "MLWI", "MPWI"),
-           mfi = as.data.frame(mfiResult)$BiasMean2Item,
-           kl = as.data.frame(klResult)$BiasMean2Item,
-           klp = as.data.frame(klpResult)$BiasMean2Item,
-           mlwi = as.data.frame(mlwiResult)$BiasMean2Item,
-           mpwi = as.data.frame(mpwiResult)$BiasMean2Item
-)
+printBorder(data = as.data.frame(mfiResult)$BiasItem2, g_range, 2, 'b')
+printLines(c("MFI", "KL", "KLP", "MLWI", "MPWI"),
+           mfi = as.data.frame(mfiResult)$BiasItem2,
+           kl = as.data.frame(klResult)$BiasItem2,
+           klp = as.data.frame(klpResult)$BiasItem2,
+           mlwi = as.data.frame(mlwiResult)$BiasItem2,
+           mpwi = as.data.frame(mpwiResult)$BiasItem2
+          )
 
 # 3 ITEM
-printLines(g_range,
-           c("MFI", "KL", "KLP", "MLWI", "MPWI"),
-           mfi = as.data.frame(mfiResult)$BiasMean3Item,
-           kl = as.data.frame(klResult)$BiasMean3Item,
-           klp = as.data.frame(klpResult)$BiasMean3Item,
-           mlwi = as.data.frame(mlwiResult)$BiasMean3Item,
-           mpwi = as.data.frame(mpwiResult)$BiasMean3Item
+printBorder(data = as.data.frame(mfiResult)$BiasItem3, g_range, 3, 'c')
+printLines(c("MFI", "KL", "KLP", "MLWI", "MPWI"),
+           mfi = as.data.frame(mfiResult)$BiasItem3,
+           kl = as.data.frame(klResult)$BiasItem3,
+           klp = as.data.frame(klpResult)$BiasItem3,
+           mlwi = as.data.frame(mlwiResult)$BiasItem3,
+           mpwi = as.data.frame(mpwiResult)$BiasItem3
 )
+
 
 # 4 ITEM
-printLines(g_range,
-           c("MFI", "KL", "KLP", "MLWI", "MPWI"),
-           mfi = as.data.frame(mfiResult)$BiasMean4Item,
-           kl = as.data.frame(klResult)$BiasMean4Item,
-           klp = as.data.frame(klpResult)$BiasMean4Item,
-           mlwi = as.data.frame(mlwiResult)$BiasMean4Item,
-           mpwi = as.data.frame(mpwiResult)$BiasMean4Item
-)
+printBorder(data = as.data.frame(mfiResult)$BiasItem4, g_range, 4, 'd')
+printLines(c("MFI", "KL", "KLP", "MLWI", "MPWI"),
+           mfi = as.data.frame(mfiResult)$BiasItem4,
+           kl = as.data.frame(klResult)$BiasItem4,
+           klp = as.data.frame(klpResult)$BiasItem4,
+           mlwi = as.data.frame(mlwiResult)$BiasItem4,
+           mpwi = as.data.frame(mpwiResult)$BiasItem4)
 
 # 5 ITEM
-printLines(g_range,
-           c("MFI", "KL", "KLP", "MLWI", "MPWI"),
-           mfi = as.data.frame(mfiResult)$BiasMean5Item,
-           kl = as.data.frame(klResult)$BiasMean5Item,
-           klp = as.data.frame(klpResult)$BiasMean5Item,
-           mlwi = as.data.frame(mlwiResult)$BiasMean5Item,
-           mpwi = as.data.frame(mpwiResult)$BiasMean5Item
-)
+printBorder(data = as.data.frame(mfiResult)$BiasItem5, g_range, 5, 'e')
+printLines(c("MFI", "KL", "KLP", "MLWI", "MPWI"),
+           mfi = as.data.frame(mfiResult)$BiasItem5,
+           kl = as.data.frame(klResult)$BiasItem5,
+           klp = as.data.frame(klpResult)$BiasItem5,
+           mlwi = as.data.frame(mlwiResult)$BiasItem5,
+           mpwi = as.data.frame(mpwiResult)$BiasItem5
+          )
 
 
 # 10 ITEM
-printLines(g_range,
-           c("MFI", "KL", "KLP", "MLWI", "MPWI"),
-           mfi = as.data.frame(mfiResult)$BiasMean10Item,
-           kl = as.data.frame(klResult)$BiasMean10Item,
-           klp = as.data.frame(klpResult)$BiasMean10Item,
-           mlwi = as.data.frame(mlwiResult)$BiasMean10Item,
-           mpwi = as.data.frame(mpwiResult)$BiasMean10Item
-)
+printBorder(data = as.data.frame(mfiResult)$BiasItem10, g_range, 10, 'f')
+printLines(c("MFI", "KL", "KLP", "MLWI", "MPWI"),
+           mfi = as.data.frame(mfiResult)$BiasItem10,
+           kl = as.data.frame(klResult)$BiasItem10,
+           klp = as.data.frame(klpResult)$BiasItem10,
+           mlwi = as.data.frame(mlwiResult)$BiasItem10,
+           mpwi = as.data.frame(mpwiResult)$BiasItem10
+          )
 
 
 # 20 ITEM
-printLines(g_range,
-           c("MFI", "KL", "KLP", "MLWI", "MPWI"),
-           mfi = as.data.frame(mfiResult)$BiasMean20Item,
-           kl = as.data.frame(klResult)$BiasMean20Item,
-           klp = as.data.frame(klpResult)$BiasMean20Item,
-           mlwi = as.data.frame(mlwiResult)$BiasMean20Item,
-           mpwi = as.data.frame(mpwiResult)$BiasMean20Item
-)
+printBorder(data = as.data.frame(mfiResult)$BiasItem20, g_range, 20, 'g')
+printLines(c("MFI", "KL", "KLP", "MLWI", "MPWI"),
+           mfi = as.data.frame(mfiResult)$BiasItem20,
+           kl = as.data.frame(klResult)$BiasItem20,
+           klp = as.data.frame(klpResult)$BiasItem20,
+           mlwi = as.data.frame(mlwiResult)$BiasItem20,
+           mpwi = as.data.frame(mpwiResult)$BiasItem20
+          )
 
 
 # 30 ITEM
-printLines(g_range,
-           c("MFI", "KL", "KLP", "MLWI", "MPWI"),
-           mfi = as.data.frame(mfiResult)$BiasMean30Item,
-           kl = as.data.frame(klResult)$BiasMean30Item,
-           klp = as.data.frame(klpResult)$BiasMean30Item,
-           mlwi = as.data.frame(mlwiResult)$BiasMean30Item,
-           mpwi = as.data.frame(mpwiResult)$BiasMean30Item
-)
+printBorder(data = as.data.frame(mfiResult)$BiasItem30, g_range, 30, 'h')
+rules = c("MFI", "KL", "KLP", "MLWI", "MPWI")
+rulesColors = 
+  printLines(rules,
+           mfi = as.data.frame(mfiResult)$BiasItem30,
+           kl = as.data.frame(klResult)$BiasItem30,
+           klp = as.data.frame(klpResult)$BiasItem30,
+           mlwi = as.data.frame(mlwiResult)$BiasItem30,
+           mpwi = as.data.frame(mpwiResult)$BiasItem30
+          )
+legend('bottomleft',g_range[2], rules , merge = TRUE, cex=0.9, text.width = 1.5,
+       col=c(rulesColors), lty = c(4, 2, 5, 6, 7, 15, 18), pch = c(5, 4, 25, 10, 12, 15, 20))
+
+
+title(main=paste("Resultado dos Bias x thetas estimados para os itens de 1 a 30 ", sep = ""), xlab = expression(theta),
+      ylab="Bias", outer = TRUE)
+
 
 # Create a legend at (1, g_range[2]) that is slightly smaller 
 # (cex) and uses the same line colors and points used by the actual plots 
 
 # title(main=paste("ISRs performance from ", thetaLevel ," thetas (th)", sep = ""), sub="[th, th[",
 #       ylab="Administered items", xlab="Thetas' level range")
-
-# PT
-title(main=paste("a. item 30", sep = ""), xlab = expression(theta),
-      ylab="Bias")

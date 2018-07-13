@@ -179,5 +179,5 @@ printLines(g_range,
 #       ylab="Administered items", xlab="Thetas' level range")
 
 # PT
-title(main=paste("a. item 1", sep = ""), xlab = expression(theta),
+title(main=paste("a. item 30", sep = ""), xlab = expression(theta),
       ylab="RMSE")
