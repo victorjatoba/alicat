@@ -36,7 +36,6 @@ rmse <- function(thHatList, thTrueList, item) {
 #'              uts/isr_compair/ to see the available rules
 #'              Example: "MFI", "KLP", "KL", "MPWI", etc.
 #' @param initValue the initialization loop value
-#' @param stopValue the stop loop criteria
 #' @param step the step velocity of the loop
 #' @param format should be out or json
 #' 
@@ -49,13 +48,16 @@ if (!require('jsonlite', lib=libDir)) install.packages("jsonlite", lib=libDir)
 library(jsonlite)
 ##########
 
-getStatisticsByEarlyCatStage = function(isr, package, initValue, stopValue, step) {
+getStatisticsByEarlyCatStage = function(isr, package, initValue, step) {
   
   file = paste(isr , "-statistics.", "json", sep = "")
   isrPath <- paste("outs/",package,"/",file, sep="")
   
   ## ISR results load
   isr_out = fromJSON(isrPath)
+  
+  # spliting the isr_out in 10 groups between -2 and 3.5
+  ranges <- split(isr_out, cut(as.matrix(isr_out$ThTrue), c(-2, -1, 0, 1, 2, 3.5), include.lowest=TRUE))
   
   rangeByStatistics <- matrix(nrow = 0, ncol = 18)
   colnames(rangeByStatistics) <- c("BiasItem1", "BiasItem2", "BiasItem3", "BiasItem4", "BiasItem5",
@@ -65,13 +67,12 @@ getStatisticsByEarlyCatStage = function(isr, package, initValue, stopValue, step
                                    "RmseItem10", "RmseItem20", "RmseItem30",
                                    
                                    "rangeV1", "rangeV2")
-  #rownames(rangeByStatistics) <- c("")
-  
-  # 6 intervals (-2, -1, 0, ..., 4)
-  for (initValue in seq(initValue, stopValue, by = step)) {
-    # getting subset of users between initValue and initValue+step
-    # thFinal is the isr_out attribute
-    range <- subset(isr_out, ThTrue >= initValue & ThTrue < (initValue+step))
+
+  # 5 groups (-2, -1, 0, 1, 2, 3.5)
+  for (i in 1:5) {
+    
+    # getting the group containing examinees id and theta
+    range <- as.data.frame(ranges[[i]])
     
     thHatList = range$EstimatedThetas
     thTrueList = range$ThTrue
@@ -111,6 +112,7 @@ getStatisticsByEarlyCatStage = function(isr, package, initValue, stopValue, step
       
     } #if
     
+    initValue = initValue + step
   } # for
   
   return(rangeByStatistics)
