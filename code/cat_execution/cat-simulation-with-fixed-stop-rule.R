@@ -4,15 +4,18 @@
 #' @Author: @victorjatoba
 #' @Email: victorjatoba[at]usp.br
 #' @Organization: University of Sao Paulo (USP)
-#' @Date: Mai, 2018
+#' @Date: 2018, mai
 ###################
 
 ## LIBS ##
 
 # Importing packages
-library('catR')
+libDir <- "~/R/x86_64-pc-linux-gnu-library"
+if (!require('jsonlite', lib=libDir)) install.packages("jsonlite", lib=libDir)
 library(jsonlite)
 
+if (!require('catR', lib=libDir)) install.packages("catR", lib=libDir)
+library(catR)
 # Using local functions
 # source("answerTheItem.R")
 ##########

@@ -1,29 +1,3 @@
-#' @description Calculate the  of the values there are on list column
-#' 
-#' @param list The list of values
-#' @param col the column of the list
-#' @return the  of the column values
-bias <- function(thHatList, thTrueList, item) {
-  diffList = matrix(nrow = 0, ncol = 1)
-  qtdExaminees = length(thHatList)
-  for(k in 1:qtdExaminees) {
-    #options(error=recover)
-    diffList =  rbind( diffList, c(thHatList[[k]][item] - thTrueList[[k]]) )
-  }
-  
-  return (sum(diffList)/qtdExaminees)
-}
-
-rmse <- function(thHatList, thTrueList, item) {
-  diffList = matrix(nrow = 0, ncol = 1)
-  qtdExaminees = length(thHatList)
-  for(k in 1:qtdExaminees) {
-    diffList =  rbind(diffList, c((thHatList[[k]][item] - thTrueList[[k]])^2) )
-  }
-  
-  return (sqrt(sum(diffList)/qtdExaminees))
-}
-
 ###################
 #' @description Get the statistics (BIAS, RMSE and SE) of the ISR from the CAT early stage
 #'
@@ -77,28 +51,28 @@ getStatisticsByEarlyCatStage = function(isr, package, initValue, step) {
     thHatList = range$EstimatedThetas
     thTrueList = range$ThTrue
     if (length(thHatList) > 0) {
-      biasItem1 = bias(thHatList, thTrueList, item = 1)
+      biasItem1 = biasOfItem(thHatList, thTrueList, item = 1)
       rmseItem1 = rmse(thHatList, thTrueList, item = 1)
       
-      biasItem2 = bias(thHatList, thTrueList, item = 2)
+      biasItem2 = biasOfItem(thHatList, thTrueList, item = 2)
       rmseItem2 = rmse(thHatList, thTrueList, item = 2)
       
-      biasItem3 = bias(thHatList, thTrueList, item = 3)
+      biasItem3 = biasOfItem(thHatList, thTrueList, item = 3)
       rmseItem3 = rmse(thHatList, thTrueList, item = 3)
       
-      biasItem4 = bias(thHatList, thTrueList, item = 4)
+      biasItem4 = biasOfItem(thHatList, thTrueList, item = 4)
       rmseItem4 = rmse(thHatList, thTrueList, item = 4)
       
-      biasItem5 = bias(thHatList, thTrueList, item = 5)
+      biasItem5 = biasOfItem(thHatList, thTrueList, item = 5)
       rmseItem5 = rmse(thHatList, thTrueList, item = 5)
       
-      biasItem10 = bias(thHatList, thTrueList, item = 10)
+      biasItem10 = biasOfItem(thHatList, thTrueList, item = 10)
       rmseItem10 = rmse(thHatList, thTrueList, item = 10)
       
-      biasItem20 = bias(thHatList, thTrueList, item = 20)
+      biasItem20 = biasOfItem(thHatList, thTrueList, item = 20)
       rmseItem20 = rmse(thHatList, thTrueList, item = 20)
       
-      biasItem30 = bias(thHatList, thTrueList, item = 30)
+      biasItem30 = biasOfItem(thHatList, thTrueList, item = 30)
       rmseItem30 = rmse(thHatList, thTrueList, item = 30)
       
       rangeByStatistics <- rbind(rangeByStatistics, c(
