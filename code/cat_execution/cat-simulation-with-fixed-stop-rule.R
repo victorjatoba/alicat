@@ -140,9 +140,6 @@ for (n in 1:10) {
       # i = 1
       for (i in 1:stopRuleLenght) {
         # Selecting the next item.
-        (rule) {
-          isr = choise
-        }
         itemInfo <- nextItem(bank, theta = thetaHat, out = removedItems, criterion = isr)
         
         # Getting the last item selected

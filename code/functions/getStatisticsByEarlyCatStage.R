@@ -24,7 +24,7 @@ library(jsonlite)
 
 getStatisticsByEarlyCatStage = function(isr, package, initValue, step) {
   
-  file = paste(isr , "-statistics.", "json", sep = "")
+  file = paste(isr , "-early-cat-stage-results.", "json", sep = "")
   isrPath <- paste("outs/",package,"/",file, sep="")
   
   ## ISR results load

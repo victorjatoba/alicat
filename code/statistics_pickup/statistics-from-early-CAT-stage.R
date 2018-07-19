@@ -55,8 +55,8 @@ connTheta <- file(fileName, open = "r")
 linnTheta <- readLines(connTheta)
 
 # the list of statistics by each examinee. +2 is userID, thTrue and thHat
-resList <- matrix(nrow = 0, ncol = 7)
-colnames(resList) <- c("UserId", "ThTrue", "ThFinal", "EstimatedThetas", "BiasList", "RmseList", "SeThetasList")
+resList <- matrix(nrow = 0, ncol = 5)
+colnames(resList) <- c("UserId", "ThTrue", "ThFinal", "EstimatedThetas", "SeThetasList")
 resList <- data.frame(resList)
 
 
@@ -86,7 +86,6 @@ for (n in 1:10) {
     administeredItems <- matrix(nrow = 0, ncol = 1)
     responsesForAdministeredItems <- matrix(nrow = 0, ncol = 1)
     seThetas <- matrix(nrow = 0, ncol = 1)
-    biasList <- matrix(nrow = 0, ncol = 1)
     rmseList <- matrix(nrow = 0, ncol = 1)
     estimatedThetas <- matrix(nrow = 0, ncol = 1)
     
@@ -95,6 +94,8 @@ for (n in 1:10) {
     matrixResponses <- as.matrix(responseDataLine)
 
     if ( answerMoreThan40Items(matrixResponses) ) {
+      
+      totalOfExaminees <- totalOfExaminees + 1      
       
       # Initializing the estimated theta
       thetaHat <- 0
@@ -137,19 +138,10 @@ for (n in 1:10) {
             seThetas <- rbind(seThetas, c(seCurrent))
           }
           
-          differenceOfThetasHatAndTrue <- (thetaHat - trueTheta)
-          squareDifferenceOfThetasHatAndTrue <- (thetaHat - trueTheta)^2
-          
           # calculating Sums
-        #  sumDifferenceOfThetasHatAndTrue <- sumDifferenceOfThetasHatAndTrue + (thetaHat - trueTheta)
-        #  squareSumDifferenceOfThetasHatAndTrue <- squareSumDifferenceOfThetasHatAndTrue + (thetaHat - trueTheta)^2
+          sumDifferenceOfThetasHatAndTrue <- sumDifferenceOfThetasHatAndTrue + (thetaHat - trueTheta)
+          squareSumDifferenceOfThetasHatAndTrue <- squareSumDifferenceOfThetasHatAndTrue + (thetaHat - trueTheta)^2
           
-          # calculating statistics
-        #  BIAS <- as.matrix(sumDifferenceOfThetasHatAndTrue / totalOfExaminees) # using matrix to fix biasList column form resList to use c()
-        #  RMSE <- sqrt( squareSumDifferenceOfThetasHatAndTrue / totalOfExaminees)
-          
-        #  biasList <- rbind(biasList, c(BIAS))
-        #  rmseList <- rbind(rmseList, c(RMSE))
         } # if answerTheItem()
         
       } # fixed Stop Rule loop
@@ -172,6 +164,11 @@ for (n in 1:10) {
   groupLength <- (groupLength + 500)
   
 } #\ 10 groups
+
+
+# calculating statistics
+#  BIAS <- as.matrix(sumDifferenceOfThetasHatAndTrue / totalOfExaminees) # using matrix to fix biasList column form resList to use c()
+#  RMSE <- sqrt( squareSumDifferenceOfThetasHatAndTrue / totalOfExaminees)
 
 
 # To print by local PC

@@ -18,14 +18,7 @@ library('jsonlite')
 ##########
 
 ## FUNCTIONS ##
-hitFirst3Items = function(itemsList) {
-  
-  return (length(itemsList) >= 3 && itemsList[[1]] == 1 && itemsList[[2]] == 1 && itemsList[[3]] == 1)
-}
 
-missedFirst3Items = function(itemsList) {
-  return (length(itemsList) >= 3 && itemsList[[1]] == 0 && itemsList[[2]] == 0 && itemsList[[3]] == 0)
-}
 ###############
 
 ## Loading parameters
@@ -74,7 +67,8 @@ groupLength <- 1
 stopRuleLenght <- 45
 
 # The total of examinees that answer more than 40 items
-totalOfExaminees <- 4979
+#totalOfExaminees <- 4979
+totalOfExaminees <- 0
 
 sumDifferenceOfThetasHatAndTrue = 0
 squareSumDifferenceOfThetasHatAndTrue = 0
