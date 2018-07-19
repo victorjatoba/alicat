@@ -322,11 +322,11 @@ plotBias(g_range, c("MFI", "KL", "KLP", "MLWI", "MPWI", "OURCAT"),
          as.data.frame(ourcatResult)
          )
 
-#plotRmse(g_range, c("MFI", "KL", "KLP", "MLWI", "MPWI", "OURCAT"), 
-#        as.data.frame(mfiResult), 
-#        as.data.frame(klResult), 
-#        as.data.frame(klpResult), 
-#        as.data.frame(mlwiResult), 
-#        as.data.frame(mpwiResult),
-#        as.data.frame(ourcatResult)
-#        )
+plotRmse(g_range, c("MFI", "KL", "KLP", "MLWI", "MPWI", "OURCAT"), 
+        as.data.frame(mfiResult), 
+        as.data.frame(klResult), 
+        as.data.frame(klpResult), 
+        as.data.frame(mlwiResult), 
+        as.data.frame(mpwiResult),
+        as.data.frame(ourcatResult)
+        )
