@@ -1,0 +1,82 @@
+[
+  {
+    "Interval": "] -2 ;  -1.5 ]",
+    "SampleLenght": "495",
+    "ItemsSelectedMean": "6.84646464646465",
+    "ThFinalMean": "-1.6367296969697",
+    "ThTrueMean": "-1.64405777777778",
+    "SeThetasMean": "0.609335757575758"
+  },
+  {
+    "Interval": "] -1.5 ;  -1 ]",
+    "SampleLenght": "471",
+    "ItemsSelectedMean": "8.39702760084926",
+    "ThFinalMean": "-1.21663014861996",
+    "ThTrueMean": "-1.15256560509554",
+    "SeThetasMean": "0.549399787685775"
+  },
+  {
+    "Interval": "] -1 ;  -0.5 ]",
+    "SampleLenght": "626",
+    "ItemsSelectedMean": "9.69009584664537",
+    "ThFinalMean": "-0.730319488817891",
+    "ThTrueMean": "-0.701740575079872",
+    "SeThetasMean": "0.48025910543131"
+  },
+  {
+    "Interval": "] -0.5 ;  0 ]",
+    "SampleLenght": "540",
+    "ItemsSelectedMean": "10.9740740740741",
+    "ThFinalMean": "-0.222530185185185",
+    "ThTrueMean": "0.0699072222222222",
+    "SeThetasMean": "0.567367222222222"
+  },
+  {
+    "Interval": "] 0 ;  0.5 ]",
+    "SampleLenght": "507",
+    "ItemsSelectedMean": "13.1301775147929",
+    "ThFinalMean": "0.267587771203156",
+    "ThTrueMean": "0.344915581854043",
+    "SeThetasMean": "0.437001183431953"
+  },
+  {
+    "Interval": "] 0.5 ;  1 ]",
+    "SampleLenght": "754",
+    "ItemsSelectedMean": "9.08488063660477",
+    "ThFinalMean": "0.730843236074271",
+    "ThTrueMean": "0.93748899204244",
+    "SeThetasMean": "0.5619149867374"
+  },
+  {
+    "Interval": "] 1 ;  1.5 ]",
+    "SampleLenght": "449",
+    "ItemsSelectedMean": "18.4654788418708",
+    "ThFinalMean": "1.33313986636971",
+    "ThTrueMean": "1.50497527839644",
+    "SeThetasMean": "0.375170601336303"
+  },
+  {
+    "Interval": "] 1.5 ;  2 ]",
+    "SampleLenght": "100",
+    "ItemsSelectedMean": "17.78",
+    "ThFinalMean": "1.696275",
+    "ThTrueMean": "1.689139",
+    "SeThetasMean": "0.440823"
+  },
+  {
+    "Interval": "] 2 ;  2.5 ]",
+    "SampleLenght": "554",
+    "ItemsSelectedMean": "21.4296028880866",
+    "ThFinalMean": "2.23634368231047",
+    "ThTrueMean": "2.17188014440433",
+    "SeThetasMean": "0.154820577617329"
+  },
+  {
+    "Interval": "] 2.5 ;  3 ]",
+    "SampleLenght": "483",
+    "ItemsSelectedMean": "10.0103519668737",
+    "ThFinalMean": "2.70465838509317",
+    "ThTrueMean": "2.61244824016563",
+    "SeThetasMean": "0.442869565217391"
+  }
+]

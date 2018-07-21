@@ -9,7 +9,9 @@
 ###################
 
 ## LIBS ##
-library(jsonlite)
+libDir <- "~/R/x86_64-pc-linux-gnu-library"
+if (!require('jsonlite', lib=libDir)) install.packages("jsonlite", lib=libDir)
+library('jsonlite')
 ##########
 
 ## FUNCTIONS ##
@@ -34,8 +36,8 @@ calculateSeThetasMean <- function(seThetasList) {
 }
 #########
 
-isr <- 'MPWI'
-path <- paste("outs/5k_examinees/implemented_cat/2012/local/")
+isr <- 'ourcat'
+path <- paste("outs/stability_point/")
 isrPath <- paste(path,"data-",isr,".json", sep="")
 
 ## Loading ISR results
@@ -78,4 +80,6 @@ for (i in 1:10) {
 
 }
 
+jsonFile = toJSON(data.frame(rangeByitemsMean), pretty=T)
+write(jsonFile, file=paste(path,isr,"-statistics-by-intervals.json", sep=""))
 write.table(rangeByitemsMean, file=paste(path,isr,"-statistics-by-intervals.out", sep=""), row.names=FALSE, col.names=TRUE)

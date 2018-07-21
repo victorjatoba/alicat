@@ -1,23 +1,25 @@
 ###################
-#' @desc Identifying the stability point of the CAT using 1% and 5% critetions
+#' @desc Storing the CAT execution results from implemented CAT.
 #'
-#' @author: @victorjatoba
-#' @email: victorjatoba[at]usp.br
-#' @organization: University of Sao Paulo (USP)
-#' @date: Mai, 2018
+#' @Author: @victorjatoba
+#' @Email: victorjatoba[at]usp.br
+#' @Organization: University of Sao Paulo (USP)
+#' @Date: Mai, 2018
 ###################
 
 ## LIBS ##
-libDir <- "~/R/x86_64-pc-linux-gnu-library"
-if (!require('catR', lib=libDir)) install.packages("catR", lib=libDir)
-if (!require('jsonlite', lib=libDir)) install.packages("jsonlite", lib=libDir)
 
+#if (!require('catR', lib="./../../R/library")) install.packages("catR", lib="./../../R/library")
+#.libPaths()
+#require('catR', lib="./../../R/library")
+
+# Use catR package
 library('catR')
-library('jsonlite')
+library(jsonlite)
 
 ## FUNCTIONS ##
 
-#' @description Verify if the CAT reached the estability point
+#' @description Verify if the CAT reached the estability point.
 #' @references see Section 5.2 from Spenassato, 2016
 #' 
 #' @param percent The percent value of the estability point to be verify
@@ -31,14 +33,20 @@ reachedTheEstabilityPoint <- function(percent, sePrev, seCurrent) {
 }
 ################
 
-# Use catR package
-library('catR')
-
-
 ## Loading parameters
 enem_mat_param = read.table("./data/spenassato.par", header = TRUE, sep = " ", stringsAsFactors = FALSE)
 
 isr <- "KLP"
+# MFI = Maximum Fisher Information
+# KL
+# KLP
+# GDI
+# GDIP
+# MEI
+# MLWI
+# MPWI
+# random
+# progressive
 
 # Change to Matrix
 bank <- as.matrix(enem_mat_param)
@@ -48,14 +56,23 @@ fileName <- "./data/spenassato-enem-responses-5k.txt";
 conn <- file(fileName, open = "r")
 linn <- readLines(conn)
 
+## Loading data
+fileName <- "./data/spenassato-enem-data-5k.txt";
+connData <- file(fileName, open = "r")
+linnData <- readLines(connData)
+
 # ## Loading true thetas
 fileName <- "./data/spenassato-enem-5k.theta";
 connTheta <- file(fileName, open = "r")
 linnTheta <- readLines(connTheta)
 
-## List of the mean of the estability points of the 10 groups
-meanOfEstabilityPoint1Percent <- matrix(nrow = 0, ncol = 1)
-meanOfEstabilityPoint5Percent <- matrix(nrow = 0, ncol = 1)
+## List of the results
+resList <- matrix(nrow = 0, ncol = 7)
+colnames(resList) <- c("UserId", "ThTrue", "ThFinal", "ItemsQttSelected", "AdministeredItemsList", "ThEstimatedList", "SeThetasList")
+resList <- data.frame(resList)
+
+resListVectors <- matrix(nrow = 0, ncol = 3)
+colnames(resListVectors) <- c("Id", "EstimatedThetas", "EstimatedSE")
 
 groupLength <- 1
 
@@ -64,42 +81,38 @@ groupLength <- 1
 for (n in 1:10) {
   
   groupResponsesN <- linn[groupLength:((groupLength-1)+500)]
-  
-  ## List of the 500 estability points
-  estabilityPoint1PercentList <- matrix(nrow = 0, ncol = 1)
-  estabilityPoint5PercentList <- matrix(nrow = 0, ncol = 1)
-  
+  groupDataN <- linnData[groupLength:((groupLength-1)+500)+1]
+
   # 500 examinees responses
-  # j = 447
+  # j = 446
   for (j in 1:500) {
     
     # initializing vector contains the administered items
     removedItems <- matrix(nrow = 0, ncol = 1)
+    administeredItems <- matrix(nrow = 0, ncol = 1)
     responsesForAdministeredItems <- matrix(nrow = 0, ncol = 1)
     seThetas <- matrix(nrow = 0, ncol = 1)
+    estimatedThetas <- matrix(nrow = 0, ncol = 1)
     
     # change response line to table
     responseDataLine <- read.table(textConnection(groupResponsesN[[j]]))
     matrixResponses <- as.matrix(responseDataLine)
-    
-    ## FIRST ITEM
-    # Selecting 1 starting item, initial ability estimate is 0
-    #itemSelected <- startItems(bank)
-    ## Selecting 4 starting items for ability levels between -2 and 2
-    # startItems(bank, randomesque = 4, theta = c(-2, 2))
-  
-    # Initializing the estimated theta
-    thetaCurrent <- 0
-    
-    # To identify the estibility point of the CAT. See Equation 2 from Spenassato (2016)
-    estabilityPoint1Percent <- 0
-    estabilityPoint5Percent <- 0
-    
+
     if ( answerMoreThan40Items(matrixResponses) ) {
       
-      # i <- 1
+      # Initializing the estimated theta
+      thetaCurrent <- 0
+      
+      # To identify the estibility point of the CAT. See Equation 2 from Spenassato (2016)
+      finalItemsQttSelected <- 0
+      
+      # storing the user ID and it true theta
+      userId <- read.table(textConnection(groupDataN[[j]]))[1]
+      trueTheta <- read.table(textConnection(groupDataN[[j]]))[2]
+      
+      i <- 1
       # loop on 45 items' responses
-      for (i in 1: 45) {
+      while (i <= 45) {
         
         ####### OUR CAT STRATEGY #########
         # change the ISR to extreme theta hat
@@ -126,8 +139,10 @@ for (n in 1:10) {
         # Adding the last administered item to the removedItems list
         removedItems <- rbind(removedItems, c(selectedItem))
         
-        # if user answer the question
         if ( answerTheItem(matrixResponses[selectedItem]) ) {
+          
+          # Storing the selected item
+          administeredItems <- rbind(administeredItems, c(selectedItem))
           
           # Storing the response of the selected item
           responsesForAdministeredItems <- rbind(responsesForAdministeredItems, c(matrixResponses[selectedItem]))
@@ -135,26 +150,23 @@ for (n in 1:10) {
           # EAP estimation, standard normal prior distribution with 10 quadrature points
           # By default, it takes the vector value (-4, 4, 33), that is, 33 quadrature points on the range [-4; 4] (or, by steps of 0.25)
           thetaCurrent <- eapEst(it = bank[removedItems,], x = as.numeric(responsesForAdministeredItems), nqp = 10)
+          estimatedThetas <- rbind(estimatedThetas, c(thetaCurrent))
           
           # if was collected more than 4 responses
           if ( length(responsesForAdministeredItems) >= 4 ) {
             # Getting the Standard Error from examinees_i and item_j
             seCurrent <- semTheta(thetaCurrent, it = bank[removedItems,], x = as.numeric(responsesForAdministeredItems),
                                   method = 'EAP', parInt = c(-4,4,10))
-          
-            ### IDENTIFYING THE estability point of the CAT
+            
+            # If collected more than 2 SE
             if ( length(seThetas) >= 2 ) {
               
               sePrev <- seThetas[length(seThetas)]
               
-              # checking the 1% stabiliting point. See Equation 2 from Spenassato (2016)
-              if ( estabilityPoint1Percent == 0 && reachedTheEstabilityPoint(percent = 0.01, sePrev, seCurrent) ) {
-                estabilityPoint1Percent <- i
-              }
-              
-              # checking the 5% stabiliting point. See Equation 2 from Spenassato (2016)
-              if ( estabilityPoint5Percent == 0 && reachedTheEstabilityPoint(percent = 0.05, sePrev, seCurrent) ) {
-                estabilityPoint5Percent <- i
+              ### The CAT stopping rule
+              if ( reachedTheEstabilityPoint(percent = 0.01, sePrev, seCurrent) ) {
+                finalItemsQttSelected <- i
+                i <- 50 # force to stop the while loop
               }
               
             }
@@ -162,58 +174,37 @@ for (n in 1:10) {
             
             seThetas <- rbind(seThetas, c(seCurrent))
           }
-        }
+        } # if answerTheItem()
         
-        # i <- i + 1
-      } #\ 45 itens responses
+        i <- i + 1
+      } #\ 45 itens loop responsesr
       
-      estabilityPoint1PercentList <- rbind(estabilityPoint1PercentList, c(estabilityPoint1Percent))
-      estabilityPoint5PercentList <- rbind(estabilityPoint5PercentList, c(estabilityPoint5Percent))
-    
-    } # answerMoreThan40Items()
-    
-    
-    #### FINAL ESTIMATION
-    # EAP estimation, uniform prior distribution upon range [-4,4]
-    #finalEst <- thetaEst(it = bank[removedItems,], x = responsesForAdministeredItems, method = "EAP", priorDist = "norm", parInt = c(-4,4,10))
-    
-    #seFinal <- semTheta(finalEst, it = bank[removedItems,], x = c(responsesForAdministeredItems),
-    #         method = 'EAP', parInt = c(-4,4,10))
-  
-    #alpha <- 0.0001
-    #confIntFinal <- c(finalEst - qnorm(1 - alpha/2) * 
-    #                    seFinal, finalEst + qnorm(1 - alpha/2) * 
-    #                    seFinal)
+      # storing the result
+      resList <- rbind(resList, 
+                       data.frame(UserId = userId,
+                                  ThTrue = trueTheta,
+                                  ThFinal = thetaCurrent,
+                                  ItemsQttSelected = finalItemsQttSelected,
+                                  AdministeredItemsList = I(list(c(administeredItems))),
+                                  ThEstimatedList = I(list(c(estimatedThetas))),
+                                  SeThetasList = I(list(c(seThetas)))
+                       ))
+    }
     
   } #\ 500 examinees responses
-  
-  meanOfEstabilityPoint1Percent <- rbind(meanOfEstabilityPoint1Percent, mean(estabilityPoint1PercentList))
-  meanOfEstabilityPoint5Percent <- rbind(meanOfEstabilityPoint5Percent, mean(estabilityPoint5PercentList))
   
   #incrementing group length with 500
   groupLength <- (groupLength + 500)
   
 } #\ 10 groups
 
-#print(paste('The ', isr, ' running time is: ', sep = ""))
-#toc()
+# To print by local PC
+write.table(resList, file=paste("outs/stability_point/data-ourcat.out", sep=""), row.names=FALSE, col.names=TRUE)
+jsonFile = toJSON(resList, pretty=T, auto_unbox = T)
 
-# Storing in a txt file
-
-# To print local
-write.table(meanOfEstabilityPoint1Percent, file=paste("outs/stability_point/ourcat-meanOfEstabilityPoint1Percent.out", sep=""), row.names=FALSE, col.names=FALSE)
-write.table(meanOfEstabilityPoint5Percent, file=paste("outs/stability_point/ourcat-meanOfEstabilityPoint5Percent.out", sep=""), row.names=FALSE, col.names=FALSE)
-
-jsonFile = toJSON(meanOfEstabilityPoint1Percent, pretty=T)
-write(jsonFile, file=paste("outs/stability_point/ourcat-meanOfEstabilityPoint1Percent.json", sep=""))
-
-mean(meanOfEstabilityPoint1Percent)
-mean(meanOfEstabilityPoint5Percent)
-
-#To print by Aguia HPC
+# To print by Aguia HPC
 #write.table(resList, row.names=FALSE, col.names=TRUE)
 
-#resList
-
 close(conn)
+close(connData)
 close(connTheta)
