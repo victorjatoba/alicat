@@ -35,15 +35,18 @@ stopRuleLenght <- function(isr) {
     
   } else if ( isr == "KL" ) {
     lenght <- 21
-  
+    
   } else if ( isr == "KLP" ) {
     lenght <- 24
-  
+    
   } else if ( isr == "MLWI" ) {
     lenght <- 23
-  
+    
   } else if ( isr == "MPWI" ) {
     lenght <- 18
+    
+  } else if (isr == "OURCAT") {
+    lenght <- 21
   }
   
   return (
@@ -108,7 +111,7 @@ for (n in 1:10) {
   
   groupResponsesN <- linn[groupLength:((groupLength-1)+500)]
   groupDataN <- linnData[groupLength:((groupLength-1)+500)+1]
-
+  
   # 500 examinees responses
   # j = 1
   # j = 446
@@ -124,7 +127,7 @@ for (n in 1:10) {
     # change response line to table
     responseDataLine <- read.table(textConnection(groupResponsesN[[j]]))
     matrixResponses <- as.matrix(responseDataLine)
-
+    
     if ( answerMoreThan40Items(matrixResponses) ) {
       
       totalOfExaminees <- totalOfExaminees + 1
@@ -139,6 +142,7 @@ for (n in 1:10) {
       # loop for fixed Stop Rule
       # i = 1
       for (i in 1:stopRuleLenght) {
+        
         # Selecting the next item.
         itemInfo <- nextItem(bank, theta = thetaHat, out = removedItems, criterion = isr)
         
@@ -173,18 +177,18 @@ for (n in 1:10) {
         
       } # fixed Stop Rule loop
       
-      # storing the result
-      # resList <- rbind(resList,
-      #                  data.frame(UserId = userId,
-      #                             ThTrue = trueTheta,
-      #                             ThFinal = thetaHat,
-      #                             AdministeredItemsList = I(list(c(administeredItems))),
-      #                             ThEstimatedList = I(list(c(estimatedThetas))),
-      #                             SeThetasList = I(list(c(seThetas)))
-      #                  ))
-      
       sumDifferenceOfThetasHatAndTrue <- sumDifferenceOfThetasHatAndTrue + (thetaHat - trueTheta)
       squareSumDifferenceOfThetasHatAndTrue <- squareSumDifferenceOfThetasHatAndTrue + (thetaHat - trueTheta)^2
+      
+      # storing the result
+      resList <- rbind(resList,
+                       data.frame(UserId = userId,
+                                  ThTrue = trueTheta,
+                                  ThFinal = thetaHat,
+                                  AdministeredItemsList = I(list(c(administeredItems))),
+                                  ThEstimatedList = I(list(c(estimatedThetas))),
+                                  SeThetasList = I(list(c(seThetas)))
+                       ))
     } # answer more than 40 items
     
   } #\ 500 examinees responses
@@ -199,11 +203,12 @@ BIAS <- sumDifferenceOfThetasHatAndTrue / totalOfExaminees
 RMSE <- sqrt( squareSumDifferenceOfThetasHatAndTrue / totalOfExaminees)
 
 # To print by local PC
-write.table(BIAS, file=paste("outs/5k_examinees/implemented_cat/2012/local/fixed_stop_rule/bias-",isr,"2.out", sep=""))
-write(RMSE, file=paste("outs/5k_examinees/implemented_cat/2012/local/fixed_stop_rule/rmse-",isr,"2.json", sep=""))
+write.table(BIAS, file=paste("outs/fixed_stop_rule/bias-", isr, ".out", sep=""))
+write(RMSE, file=paste("outs/fixed_stop_rule/rmse-", isr, ".out", sep="")
 
-# To print by Aguia HPC
-#write.table(resList, row.names=FALSE, col.names=TRUE)
+# To print by local PC
+jsonFile = toJSON(resList, pretty=T)
+write(jsonFile, file=paste("outs/fixed_stop_rule/data-", isr, "-fixed-stop-rule.json", sep=""))
 
 close(conn)
 close(connData)

@@ -189,7 +189,7 @@ for (n in 1:10) {
                                   ThEstimatedList = I(list(c(estimatedThetas))),
                                   SeThetasList = I(list(c(seThetas)))
                        ))
-    }
+    } # answer more than 40 items
     
   } #\ 500 examinees responses
   

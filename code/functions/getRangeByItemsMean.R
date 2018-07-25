@@ -18,6 +18,9 @@
 ###################
 
 ## LIBS ##
+# Importing packages
+libDir <- "~/R/x86_64-pc-linux-gnu-library"
+if (!require('jsonlite', lib=libDir)) install.packages("jsonlite", lib=libDir)
 library(jsonlite)
 ##########
 

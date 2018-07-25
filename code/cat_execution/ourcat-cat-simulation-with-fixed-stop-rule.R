@@ -191,18 +191,18 @@ for (n in 1:10) {
         
       } # fixed Stop Rule loop
       
-      # storing the result
-      # resList <- rbind(resList,
-      #                  data.frame(UserId = userId,
-      #                             ThTrue = trueTheta,
-      #                             ThFinal = thetaHat,
-      #                             AdministeredItemsList = I(list(c(administeredItems))),
-      #                             ThEstimatedList = I(list(c(estimatedThetas))),
-      #                             SeThetasList = I(list(c(seThetas)))
-      #                  ))
-      
       sumDifferenceOfThetasHatAndTrue <- sumDifferenceOfThetasHatAndTrue + (thetaHat - trueTheta)
       squareSumDifferenceOfThetasHatAndTrue <- squareSumDifferenceOfThetasHatAndTrue + (thetaHat - trueTheta)^2
+      
+      # storing the result
+      resList <- rbind(resList,
+                       data.frame(UserId = userId,
+                                  ThTrue = trueTheta,
+                                  ThFinal = thetaHat,
+                                  AdministeredItemsList = I(list(c(administeredItems))),
+                                  ThEstimatedList = I(list(c(estimatedThetas))),
+                                  SeThetasList = I(list(c(seThetas)))
+                       ))
     } # answer more than 40 items
     
   } #\ 500 examinees responses
@@ -220,8 +220,9 @@ RMSE <- sqrt( squareSumDifferenceOfThetasHatAndTrue / totalOfExaminees)
 write.table(BIAS, file=paste("outs/fixed_stop_rule/bias-OURCAT.out", sep=""))
 write(RMSE, file=paste("outs/fixed_stop_rule/rmse-OURCAT.out", sep=""))
 
-# To print by Aguia HPC
-#write.table(resList, row.names=FALSE, col.names=TRUE)
+# To print by local PC
+jsonFile = toJSON(resList, pretty=T)
+write(jsonFile, file=paste("outs/fixed_stop_rule/data-ourcat-fixed-stop-rule.json", sep=""))
 
 close(conn)
 close(connData)
