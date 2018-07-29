@@ -58,7 +58,7 @@ stopRuleLenght <- function(isr) {
 ## Loading parameters
 enem_mat_param = read.table("./data/spenassato.par", header = TRUE, sep = " ", stringsAsFactors = FALSE)
 
-isr <- "MFI"
+isr <- "MPWI"
 # MFI = Maximum Fisher Information
 # KL
 # KLP
@@ -203,8 +203,8 @@ BIAS <- sumDifferenceOfThetasHatAndTrue / totalOfExaminees
 RMSE <- sqrt( squareSumDifferenceOfThetasHatAndTrue / totalOfExaminees)
 
 # To print by local PC
-write.table(BIAS, file=paste("outs/fixed_stop_rule/bias-", isr, ".out", sep=""))
-write(RMSE, file=paste("outs/fixed_stop_rule/rmse-", isr, ".out", sep="")
+write.table(BIAS, file=paste("outs/fixed_stop_rule/statistics/bias-", isr, ".out", sep=""))
+write(RMSE, file=paste("outs/fixed_stop_rule/statistics/rmse-", isr, ".out", sep=""))
 
 # To print by local PC
 jsonFile = toJSON(resList, pretty=T)
