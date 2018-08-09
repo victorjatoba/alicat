@@ -68,11 +68,11 @@ g_range[2] <- 4
 step <- 1
 package <- "statistics_from_early_cat_stage"
 
-mfiResult  <- getStatisticsByEarlyCatStage("MFI", package, initValue, stopValue, step)
-klResult   <- getStatisticsByEarlyCatStage("KL", package, initValue, stopValue, step)
-klpResult  <- getStatisticsByEarlyCatStage("KLP", package, initValue, stopValue, step)
-mlwiResult <- getStatisticsByEarlyCatStage("MLWI", package, initValue, stopValue, step)
-mpwiResult <- getStatisticsByEarlyCatStage("MPWI", package, initValue, stopValue, step)
+mfiResult  <- getStatisticsByEarlyCatStage("MFI", package, initValue, stopValue)
+klResult   <- getStatisticsByEarlyCatStage("KL", package, initValue, stopValue)
+klpResult  <- getStatisticsByEarlyCatStage("KLP", package, initValue, stopValue)
+mlwiResult <- getStatisticsByEarlyCatStage("MLWI", package, initValue, stopValue)
+mpwiResult <- getStatisticsByEarlyCatStage("MPWI", package, initValue, stopValue)
 
 plot(as.data.frame(mfiResult)$RmseMean1Item, type = "o",
      ylim=g_range,

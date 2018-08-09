@@ -41,10 +41,11 @@ printLines <- function(rules, mfi, kl, klp, mlwi, mpwi, gdi, gdip, ourcat) {
       lines(gdip, type="o", pch=20, lty=18, col="orange")
       rulesColors <- cbind(rulesColors, c("orange"))
       
-    } else if (rules[i] == "OURCAT") {
-      lines(ourcat, type="o", pch=20, lty=18, col="black")
-      rulesColors <- cbind(rulesColors, c("black"))
-    }
+    } 
+#      else if (rules[i] == "CAT proposto") {
+#      lines(ourcat, type="o", pch=20, lty=18, col="black")
+#      rulesColors <- cbind(rulesColors, c("black"))
+#    }
   }
   
   return (rulesColors)
@@ -62,7 +63,7 @@ printBorder = function(data, g_range, item, letter, ylab='bias') {
        ylim=g_range,
        col="blue", axes=FALSE, ann=FALSE)
   
-  axis(1, cex.axis=0.7, at=1:5, lab=c("[-2, -1]", "]0]", "]1]", "]2]", "]3.5]"))
+  axis(1, cex.axis=0.7, at=1:5, lab=c("[-2, -1]", "]-1, 0]", "]0, 1]", "]1, 2]", "]2, 3.5]"))
                                       #-2, -1.5, -1, -0.5, 0, 0.5, 1, 1.5, 2, 2.5, 3.5
   
   # Make y axis with horizontal labels that display ticks at 
@@ -174,11 +175,11 @@ plotBias = function(g_range, isrsTitle, mfiResult, klResult, klpResult, mlwiResu
                mpwi = mpwiResult$BiasItem30,
                ourcat = ourcatResult$BiasItem30
     )
-  legend('topleft',g_range[2], rules , merge = TRUE, cex=0.3, text.width = 0.2,
+  legend('topleft',g_range[2], rules , merge = TRUE, cex=1.4, text.width = 1.7,
          col=c(rulesColors), lty = c(4, 2, 5, 6, 7, 15, 18), pch = c(5, 4, 25, 10, 12, 15, 20))
   
   
-  title(main=paste("Resultado dos Bias x thetas estimados para os itens de 1 a 30 ", sep = ""), xlab = expression(theta),
+  title(main=paste("Resultado dos Bias x escores estimados para os itens de 1 a 30 ", sep = ""), xlab = expression(theta),
         ylab="Bias", outer = TRUE)
   
 }
@@ -281,11 +282,11 @@ plotRmse = function(g_range, isrsTitle, mfiResult, klResult, klpResult, mlwiResu
                mpwi = mpwiResult$RmseItem30,
                ourcat = ourcatResult$RmseItem30
     )
-  legend('topleft',g_range[2], rules , merge = TRUE, cex=0.4, text.width = 0.2,
+  legend('topleft',g_range[2], rules , merge = TRUE, cex=1.4, text.width = 1.7,
          col=c(rulesColors), lty = c(4, 2, 5, 6, 7, 15, 18), pch = c(5, 4, 25, 10, 12, 15, 20))
   
   
-  title(main=paste("Resultado dos RMSE x thetas estimados para os itens de 1 a 30 ", sep = ""), xlab = expression(theta),
+  title(main=paste("Resultado dos RMSE x escores estimados para os itens de 1 a 30 ", sep = ""), xlab = expression(theta),
         ylab="RMSE", outer = TRUE)
   
 }
@@ -301,7 +302,8 @@ klResult   <- getStatisticsByEarlyCatStage("KL", package, initValue, step)
 klpResult  <- getStatisticsByEarlyCatStage("KLP", package, initValue, step)
 mlwiResult <- getStatisticsByEarlyCatStage("MLWI", package, initValue, step)
 mpwiResult <- getStatisticsByEarlyCatStage("MPWI", package, initValue, step)
-ourcatResult <- getStatisticsByEarlyCatStage("OURCAT", package, initValue, step)
+ourcatResult <- ''
+  #getStatisticsByEarlyCatStage("OURCAT", package, initValue, step)
 
 g_range <- matrix()
 # y
@@ -313,20 +315,21 @@ par(mfrow = c(2,4))
 par(oma = c(0,0,3,0))
 par(mar=c(5,4,4,2)+0.1)
 
-plotBias(g_range, c("MFI", "KL", "KLP", "MLWI", "MPWI", "OURCAT"), 
+#plotBias(g_range, c("MFI", "KL", "KLP", "MLWI", "MPWI", "CAT proposto"), 
+plotBias(g_range, c("MFI", "KL", "KLP", "MLWI", "MPWI"), 
          as.data.frame(mfiResult), 
          as.data.frame(klResult), 
          as.data.frame(klpResult), 
          as.data.frame(mlwiResult), 
-         as.data.frame(mpwiResult),
-         as.data.frame(ourcatResult)
+         as.data.frame(mpwiResult)
          )
 
-plotRmse(g_range, c("MFI", "KL", "KLP", "MLWI", "MPWI", "OURCAT"), 
-        as.data.frame(mfiResult), 
-        as.data.frame(klResult), 
-        as.data.frame(klpResult), 
-        as.data.frame(mlwiResult), 
-        as.data.frame(mpwiResult),
-        as.data.frame(ourcatResult)
-        )
+#plotRmse(g_range, c("MFI", "KL", "KLP", "MLWI", "MPWI", "CAT proposto"),
+
+#plotRmse(g_range, c("MFI", "KL", "KLP", "MLWI", "MPWI"),
+#        as.data.frame(mfiResult), 
+#        as.data.frame(klResult), 
+#        as.data.frame(klpResult), 
+#        as.data.frame(mlwiResult), 
+#        as.data.frame(mpwiResult)
+#        )

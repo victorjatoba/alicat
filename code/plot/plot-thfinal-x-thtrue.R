@@ -31,9 +31,57 @@ par(oma = c(0,0,3,0))
 par(mar=c(5,4,4,2)+0.1)
 
 package = "fixed_stop_rule"
-plotIsr("OURCAT-fixed-stop-rule", package)
-plotIsr("MFI-fixed-stop-rule", package)
-plotIsr("KL-fixed-stop-rule", package)
-plotIsr("KLP-fixed-stop-rule", package)
-plotIsr("MLWI-fixed-stop-rule", package)
-plotIsr("MPWI-fixed-stop-rule", package)
+#plotIsr("OURCAT-fixed-stop-rule", package)
+#plotIsr("MFI-fixed-stop-rule", package)
+#plotIsr("KL-fixed-stop-rule", package)
+#plotIsr("KLP-fixed-stop-rule", package)
+#plotIsr("MLWI-fixed-stop-rule", package)
+#plotIsr("MPWI-fixed-stop-rule", package)
+
+# CAT PROPOSTO
+isr = "OURCAT-fixed-stop-rule"
+isr_out = getJsonData(isr, package)
+plot(x = isr_out$ThTrue, y = isr_out$ThFinal, col = "blue",
+     main = "CAT proposto", ylab = "", xlab = "" )
+mtext(expression(paste(theta)),side=2,las=1,line=2.5)
+mtext(expression(paste(hat(theta))),side=1,las=1,line=2.5)
+
+# MFI
+isr = "MFI-fixed-stop-rule"
+isr_out = getJsonData(isr, package)
+plot(x = isr_out$ThTrue, y = isr_out$ThFinal, col = "blue",
+     main = "F", ylab = "", xlab = "" )
+mtext(expression(paste(theta)),side=2,las=1,line=2.5)
+mtext(expression(paste(hat(theta))),side=1,las=1,line=2.5)
+
+# KL
+isr = "KL-fixed-stop-rule"
+isr_out = getJsonData(isr, package)
+plot(x = isr_out$ThTrue, y = isr_out$ThFinal, col = "blue",
+     main = "KL", ylab = "", xlab = "" )
+mtext(expression(paste(theta)),side=2,las=1,line=2.5)
+mtext(expression(paste(hat(theta))),side=1,las=1,line=2.5)
+
+# KLP
+isr = "KLP-fixed-stop-rule"
+isr_out = getJsonData(isr, package)
+plot(x = isr_out$ThTrue, y = isr_out$ThFinal, col = "blue",
+     main = "KLP", ylab = "", xlab = "" )
+mtext(expression(paste(theta)),side=2,las=1,line=2.5)
+mtext(expression(paste(hat(theta))),side=1,las=1,line=2.5)
+
+# MLWI
+isr = "MLWI-fixed-stop-rule"
+isr_out = getJsonData(isr, package)
+plot(x = isr_out$ThTrue, y = isr_out$ThFinal, col = "blue",
+     main = "MLWI", ylab = "", xlab = "" )
+mtext(expression(paste(theta)),side=2,las=1,line=2.5)
+mtext(expression(paste(hat(theta))),side=1,las=1,line=2.5)
+
+# MPWI
+isr = "MPWI-fixed-stop-rule"
+isr_out = getJsonData(isr, package)
+plot(x = isr_out$ThTrue, y = isr_out$ThFinal, col = "blue",
+     main = "MPWI", ylab = "", xlab = "" )
+mtext(expression(paste(theta)),side=2,las=1,line=2.5)
+mtext(expression(paste(hat(theta))),side=1,las=1,line=2.5)
