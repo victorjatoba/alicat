@@ -6,8 +6,6 @@ R code for the Master degree study
 ### Author
 <dl>
   <dt>Victor Jatobá</dt>
-  <dt>Victor Jatobá</dt>
-  <dd>victorjatoba10(at)gmail[dot]com</dd>
   <dd>victorjatoba(at)usp[dot]br</dd>
 </dl>
 
