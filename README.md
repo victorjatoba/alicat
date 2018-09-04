@@ -3,13 +3,13 @@ R code for the Master degree study
 
 ## Title: "A personalized approach to the item selection process in Computerized Adaptive Testing"
 
-### Author
+### Author:
 <dl>
   <dt>Victor Jatobá</dt>
   <dd>victorjatoba(at)usp[dot]br</dd>
 </dl>
 
-### Advisor
+### Advisor:
 <dl>
   <dt>Karina V. Delgado</dt>
   <dd>kvd(at)usp[dot]br</dd>
