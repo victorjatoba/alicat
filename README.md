@@ -1,6 +1,5 @@
 <img src="https://github.com/victorjatoba/alicat/blob/master/ALICAT.png?raw=true" width="50%" />
 
-# ALICAT: The personALIzed CAT (Computerized Adptive Testing)
 R code for the Master degree study
 
 ## Title: "A personalized approach to the item selection process in Computerized Adaptive Testing"
